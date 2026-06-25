@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>資訊科技年鑑 1950-2025</title>
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --sidebar: #1a1a2e;
+      --card: #16213e;
+      --border: #2a2a4e;
+      --text: #e0e0e0;
+      --text-muted: #8a8a9a;
+      --accent: #4E79A7;
+      --accent2: #F28E2B;
+      --accent3: #E15759;
+      --accent4: #76B7B2;
+      --accent5: #59A14F;
+      --gold: #FFD700;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a3e 50%, #0f0f1a 100%);
+      padding: 40px 20px 30px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      padding: 15px 20px;
+      background: var(--sidebar);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px 6px 0 0;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+      background: var(--border);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 220px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px 10px 40px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .search-box::before {
+      content: '🔍';
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .decade-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .decade-btn {
+      padding: 10px 15px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .decade-btn:hover, .decade-btn.active {
+      background: var(--accent2);
+      border-color: var(--accent2);
+      color: #000;
+    }
+
+    .timeline-section {
+      margin-bottom: 30px;
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .timeline-header h2 {
+      font-size: 1.3rem;
+    }
+
+    .year-display {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .timeline-slider-container {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .timeline-track {
+      position: relative;
+      height: 50px;
+      margin: 15px 0;
+    }
+
+    .timeline-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      transform: translateY(-50%);
+    }
+
+    .timeline-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px;
+      transition: width 0.2s;
+    }
+
+    .timeline-input {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 30px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .timeline-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(78, 121, 167, 0.5);
+    }
+
+    .timeline-markers {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 3px;
+    }
+
+    .timeline-marker {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .year-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .year-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      cursor: pointer;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .year-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .year-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    .year-card:hover::before { opacity: 1; }
+
+    .year-card .year {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .year-card .title {
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .year-card .desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .year-card .tags {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .year-card .tag {
+      font-size: 0.65rem;
+      padding: 3px 7px;
+      background: var(--sidebar);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    .year-card .turing-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #000;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .highlight-card {
+      background: var(--sidebar);
+      border-color: var(--gold);
+    }
+
+    .highlight-card::before {
+      opacity: 1 !important;
+      background: linear-gradient(90deg, var(--gold), var(--accent2)) !important;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .turing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+    }
+
+    .turing-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 15px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .turing-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+    }
+
+    .turing-card .year {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 5px;
+    }
+
+    .turing-card .name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .turing-card .name-en {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .turing-card .reason {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      margin: 20px auto;
+    }
+
+    .modal-header {
+      padding: 20px 25px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--card);
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      background: var(--sidebar);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--text);
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover { background: var(--accent3); }
+
+    .modal-body {
+      padding: 25px;
+    }
+
+    .modal-body p {
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .modal-body h3 {
+      color: var(--accent2);
+      margin: 15px 0 8px;
+      font-size: 1.1rem;
+    }
+
+    .modal-body ul { margin-left: 18px; margin-bottom: 12px; }
+    .modal-body li { line-height: 1.7; color: var(--text-muted); }
+    .modal-body a { color: var(--accent); text-decoration: none; }
+    .modal-body a:hover { text-decoration: underline; }
+
+    .no-results {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .stat-card .number {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-card .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      margin-top: 30px;
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .hero { padding: 30px 15px 20px; }
+      .tabs { padding: 10px; justify-content: flex-start; }
+      .tab-btn { padding: 8px 12px; font-size: 0.85rem; }
+      .tab-content { padding: 15px; }
+      .controls { flex-direction: column; }
+      .year-cards { grid-template-columns: 1fr; }
+      .turing-grid { grid-template-columns: 1fr; }
+      .decade-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>資訊科技年鑑</h1>
+    <p>1950 - 2025 資訊科技發展史</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="timeline">時間軸</button>
+    <button class="tab-btn" data-tab="browse">瀏覽全部</button>
+    <button class="tab-btn" data-tab="turing">圖靈獎</button>
+    <button class="tab-btn" data-tab="stats">統計資料</button>
+  </div>
+
+  <div id="tab-timeline" class="tab-content active">
+    <div class="timeline-section">
+      <div class="timeline-header">
+        <h2>拖曳探索</h2>
+        <div class="year-display" id="yearDisplay">2000</div>
+      </div>
+      <div class="timeline-slider-container">
+        <div class="timeline-track">
+          <div class="timeline-line"></div>
+          <div class="timeline-progress" id="timelineProgress"></div>
+          <input type="range" class="timeline-input" id="timelineSlider" min="1950" max="2025" value="2000">
+        </div>
+        <div class="timeline-markers">
+          <span class="timeline-marker">1950</span>
+          <span class="timeline-marker">1960</span>
+          <span class="timeline-marker">1970</span>
+          <span class="timeline-marker">1980</span>
+          <span class="timeline-marker">1990</span>
+          <span class="timeline-marker">2000</span>
+          <span class="timeline-marker">2010</span>
+          <span class="timeline-marker">2020</span>
+          <span class="timeline-marker">2025</span>
+        </div>
+      </div>
+    </div>
+    <div id="modalPreview" class="year-cards"></div>
+  </div>
+
+  <div id="tab-browse" class="tab-content">
+    <div class="controls">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="搜尋年份、關鍵字...">
+      </div>
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="hardware">硬體</button>
+        <button class="filter-btn" data-filter="software">軟體</button>
+        <button class="filter-btn" data-filter="network">網路</button>
+        <button class="filter-btn" data-filter="turing">圖靈獎年</button>
+      </div>
+    </div>
+    <div class="decade-grid">
+      <button class="decade-btn" data-decade="1950">1950s</button>
+      <button class="decade-btn" data-decade="1960">1960s</button>
+      <button class="decade-btn" data-decade="1970">1970s</button>
+      <button class="decade-btn" data-decade="1980">1980s</button>
+      <button class="decade-btn" data-decade="1990">1990s</button>
+      <button class="decade-btn" data-decade="2000">2000s</button>
+      <button class="decade-btn" data-decade="2010">2010s</button>
+      <button class="decade-btn" data-decade="2020">2020s</button>
+    </div>
+    <div id="yearGrid" class="year-cards"></div>
+    <div id="noResults" class="no-results" style="display:none;">沒有找到符合條件的結果</div>
+  </div>
+
+  <div id="tab-turing" class="tab-content">
+    <h2 class="section-title">🏆 圖靈獎得主 (1966-2025)</h2>
+    <div id="turingGrid" class="turing-grid"></div>
+  </div>
+
+  <div id="tab-stats" class="tab-content">
+    <div class="stats-bar">
+      <div class="stat-card"><div class="number">76</div><div class="label">年份跨度</div></div>
+      <div class="stat-card"><div class="number">1400+</div><div class="label">文章總數</div></div>
+      <div class="stat-card"><div class="number">60</div><div class="label">圖靈獎得主</div></div>
+      <div class="stat-card"><div class="number">5</div><div class="label">類別領域</div></div>
+    </div>
+    <h2 class="section-title">各年代重要發明</h2>
+    <div class="turing-grid" id="statsGrid"></div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">2000 年</h2>
+        <button class="modal-close" id="modalClose">×</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>資訊科技年鑑 | 由 <a href="https://opencode.ai/" target="_blank">OpenCode</a> + AI 撰寫</p>
+  </footer>
+
+  <script>
+    const yearData = {
+      1950: { title: "圖靈測試與儲存程式電腦時代", highlights: ["圖靈測試概念提出", "SEAC 首部儲存程式電腦", "Whirlwind 即時計算系統", "ERA 1101 商業電腦"], category: "hardware", hasTuring: false, desc: "1950 年是現代計算的黎明時期。圖靈提出了著名的「圖靈測試」概念，為人工智慧奠定了思想基礎。" },
+      1951: { title: "UNIVAC I 商業化元年", highlights: ["UNIVAC I 正式交付", "LEO I 商業電腦", "Ferranti Mark I", "Short Code 程式語言"], category: "hardware", hasTuring: false, desc: "UNIVAC I 成為第一台商業化的電子計算機，被美國人口普查局採用。" },
+      1952: { title: "EDVAC 與 IBM 701", highlights: ["IBM 701 宣布研發", "UNIVAC 預測大選", "A-0 編譯器發明", "EDVAC 開始運轉"], category: "hardware", hasTuring: false, desc: "IBM 701 宣布開發，這是 IBM 第一台科學計算機。UNIVAC 成功預測美國總統大選結果。" },
+      1953: { title: "IBM 650 量產時代", highlights: ["IBM 650 大量生產", "EDVAC 正式完工", "IBM 701 開始出貨", "LEO I 商業服務"], category: "hardware", hasTuring: false, desc: "IBM 650 成為第一台大量生產的科學計算機，共售出超過 2000 台。" },
+      1954: { title: "FORTRAN 啟動與磁芯記憶體", highlights: ["IBM 650 量產巔峰", "TRADIC 電晶體電腦", "FORTRAN 語言開發啟動", "磁芯記憶體發明"], category: "hardware", hasTuring: false, desc: "TRADIC 成為第一台完全使用電晶體的電腦。IBM 開始開發 FORTRAN 語言。" },
+      1955: { title: "IBM 704 與浮點運算", highlights: ["IBM 704 發表", "Whirlwind 升級磁芯記憶體", "首套商業薪資系統", "SAGE 防空系統原型"], category: "hardware", hasTuring: false, desc: "IBM 704 是第一台大量生產的科學計算機，具備硬體浮點運算能力。" },
+      1956: { title: "RAMAC 磁碟與達特茅斯會議", highlights: ["RAMAC 磁碟儲存系統", "TX-0 電晶體電腦", "達特茅斯 AI 會議", "FORTRAN 語言開發"], category: "hardware", hasTuring: false, desc: "IBM 發明 RAMAC，這是第一個硬碟儲存系統，開創了海量儲存的時代。" },
+      1957: { title: "FORTRAN 發布與 Sputnik 危機", highlights: ["FORTRAN I 正式發布", "IBM 709 推出", "史普尼克衛星發射", "SHARE 用戶組織成立"], category: "software", hasTuring: false, desc: "FORTRAN I 的發布標誌著高階程式語言時代的來臨。" },
+      1958: { title: "積體電路發明", highlights: ["積體電路發明", "ALGOL 58 程式語言", "LISP 語言萌芽", "Fairchild 半導體創立"], category: "hardware", hasTuring: false, desc: "積體電路的發明預示了半導體革命。Fairchild Semiconductor 的創立開啟了矽谷時代。" },
+      1959: { title: "COBOL 與 PDP-1 原型", highlights: ["IBM 1401 宣布", "COBOL 程式語言開發", "PDP-1 電腦原型", "整合電路進展"], category: "software", hasTuring: false, desc: "IBM 1401 成為最暢銷的商業電腦。COBOL 語言的開發讓商業計算更普及。" },
+      1960: { title: "PDP-1 交付與 ALGOL 60", highlights: ["PDP-1 正式交付", "IBM 1401 大量出貨", "ALGOL 60 標準化", "COBOL 語言完成"], category: "hardware", hasTuring: false, desc: "PDP-1 的交付開創了迷你電腦時代。ALGOL 60 定義了結構化程式設計的基礎。" },
+      1961: { title: "IBM 7030 Stretch 與 CTSS", highlights: ["IBM 7030 Stretch 超級電腦", "CTSS 分時系統", "Project MAC 獲得資助", "IBM 1401 市場主導"], category: "hardware", hasTuring: false, desc: "IBM 7030 Stretch 是當時最快的超級電腦。CTSS 分時系統展示了多人共用電腦的可能性。" },
+      1962: { title: "Telstar 衛星與 SpaceWar!", highlights: ["Telstar 衛星發射", "SpaceWar! 遊戲誕生", "IBM 1311 磁碟", "Atlas 虛擬記憶體"], category: "network", hasTuring: false, desc: "Telstar 衛星實現了首次跨大西洋電視轉播。SpaceWar! 成为第一台電子遊戲。" },
+      1963: { title: "滑鼠發明與 ASCII 標準", highlights: ["滑鼠發明", "ASCII 標準化", "CTSS 系統成熟", "恩格巴特 NLS 系統"], category: "hardware", hasTuring: false, desc: "恩格巴特發明了滑鼠，為未來的圖形介面互動奠定基礎。ASCII 標準化解決了文字交換問題。" },
+      1964: { title: "IBM System/360 革命", highlights: ["IBM System/360 發表", "CDC 6600 超級電腦", "BASIC 語言誕生", "PL/I 語言設計"], category: "hardware", hasTuring: false, desc: "IBM System/360 的發表是電腦產業最重要的革命之一，確立了相容性概念。" },
+      1965: { title: "PDP-8 迷你電腦與摩爾定律", highlights: ["PDP-8 迷你電腦發表", "System/360 開始出貨", "Project MAC 成立", "摩爾定律提出"], category: "hardware", hasTuring: false, desc: "PDP-8 以 20,000 美元的價格開啟了迷你電腦時代。摩爾定律預測了半導體效能的指數成長。" },
+      1966: { title: "首位圖靈獎得主 Alan Perlis", highlights: ["Alan Perlis 獲圖靈獎", "HP 2116A 首台電腦", "DRAM 記憶體發明", "ELIZA 聊天機器人"], category: "turing", hasTuring: true, turingName: "Alan Perlis", desc: "Alan Perlis 成为第一位圖靈獎得主，表彰其在程式語言理論方面的貢獻。DRAM 記憶體的發明為未來的電腦儲存技術奠定基礎。" },
+      1967: { title: "Simula 物件導向誕生", highlights: ["Simula 67 物件導向", "LOGO 語言發明", "軟碟發明", "觸控螢幕專利"], category: "software", hasTuring: true, turingName: "Maurice Wilkes", desc: "Simula 67 成为第一個物件導向程式語言，預示了後來的 OO 革命。" },
+      1968: { title: "「所有展示之母」", highlights: ["恩格巴特演示革命", "Intel 公司成立", "Dijkstra GOTO 有害論", "結構化程式設計運動"], category: "network", hasTuring: true, turingName: "Richard Hamming", desc: "恩格巴特在「所有展示之母」中介紹了滑鼠、視窗、超文字等革命性概念。Intel 的成立開啟了微處理器時代。" },
+      1969: { title: "ARPANET 首次連線", highlights: ["ARPANET 首次連線", "UNIX 作業系統誕生", "RFC 1 發布", "雷射印表機發明"], category: "network", hasTuring: true, turingName: "Marvin Minsky", desc: "ARPANET 在 UCLA 和 SRI 之間建立了首次連線，標誌著網際網路的誕生。" },
+      1970: { title: "Pascal 語言與 PDP-11", highlights: ["Pascal 語言發明", "PDP-11 發表", "Xerox PARC 成立", "Codd 關聯式資料庫模型"], category: "software", hasTuring: true, turingName: "James H. Wilkinson", desc: "Pascal 語言成為結構化程式設計的重要工具。Codd 的關聯式資料庫模型是現代資料庫的基礎。" },
+      1971: { title: "Intel 4004 微處理器", highlights: ["Intel 4004 微處理器", "電子郵件發明(@符號)", "Winchester 硬碟", "公用計算概念"], category: "hardware", hasTuring: true, turingName: "John McCarthy", desc: "Intel 4004 是第一個商業化微處理器，開創了微電腦時代。電子郵件開始使用 @ 符號。" },
+      1972: { title: "C 語言誕生", highlights: ["C 語言誕生", "Pong 遊戲機", "HP-35 科學計算機", "TELNET 協定"], category: "software", hasTuring: true, turingName: "Edsger Dijkstra", desc: "C 語言的誕生為 Unix 作業系統的發展提供了强大工具。Atari Pong 開創了電子遊戲產業。" },
+      1973: { title: "Xerox Alto 與 Ethernet", highlights: ["Xerox Alto GUI 電腦", "Ethernet 發明", "ARPANET 國際連線", "TCP 協定論文"], category: "network", hasTuring: true, turingName: "Charles Bachman", desc: "Xerox Alto 展示了未來電腦的願景：圖形介面、滑鼠和網路。Ethernet 和 TCP/IP 的發展為現代網路奠定了基礎。" },
+      1974: { title: "TCP/IP 規範與 Intel 8080", highlights: ["TCP/IP 規範論文", "Intel 8080 處理器", "CP/M 作業系統", "Prolog 邏輯程式語言"], category: "network", hasTuring: true, turingName: "Donald Knuth", desc: "TCP/IP 協定的規範為網路互聯互通提供了標準。Intel 8080 使得個人電腦革命成為可能。" },
+      1975: { title: "Altair 8800 與 Microsoft", highlights: ["Altair 8800 發表", "Microsoft 公司成立", "MOS 6502 處理器", "Homebrew Computer Club"], category: "hardware", hasTuring: true, turingName: "Allen Newell & Herbert Simon", desc: "Altair 8800 的發表點燃了個人電腦革命。Bill Gates 和 Paul Allen 成立 Microsoft 公司。" },
+      1976: { title: "Apple I 與 Cray-1", highlights: ["Apple I 電腦", "Cray-1 超級電腦", "5.25 軟碟", "Diffie-Hellman 公鑰密碼學"], category: "hardware", hasTuring: true, turingName: "Michael Rabin & Dana Scott", desc: "Apple I 是第一台預先組裝好的個人電腦。Diffie-Hellman 密碼學開創了現代密碼學的新時代。" },
+      1977: { title: "Apple II 三大傑出商品", highlights: ["Apple II 發表", "Commodore PET", "TRS-80 三劍客", "TCP/IP 三網路測試"], category: "hardware", hasTuring: true, turingName: "John Backus", desc: "1977 年被稱為「三大傑出商品」之年，確立了個人電腦的市場地位。" },
+      1978: { title: "VisiCalc 試算表", highlights: ["VisiCalc 試算表軟體", "第一個 BBS 系統 CBBS", "Intel 8086 處理器", "WordStar 文書處理"], category: "software", hasTuring: true, turingName: "Robert Floyd", desc: "VisiCalc 是第一個電子試算表軟體，證明了電腦不僅可以處理文字，還可以處理數字。" },
+      1979: { title: "Motorola 68000 與 Usenet", highlights: ["Motorola 68000 處理器", "Usenet 建立", "Sony Walkman 隨身聽", "Epson 點陣印表機"], category: "hardware", hasTuring: true, turingName: "Kenneth Iverson", desc: "Motorola 68000 為早期的 Mac 和 Amiga 電腦提供動力。Usenet 的建立創建了網路上第一個大型討論社群。" },
+      1980: { title: "MS-DOS 合約與 Sinclair ZX80", highlights: ["IBM 與 Microsoft MS-DOS 合約", "Sinclair ZX80 上市", "Seagate ST-506 硬碟", "Ada 語言標準"], category: "software", hasTuring: true, turingName: "Tony Hoare", desc: "Microsoft 與 IBM 的 MS-DOS 合約奠定了 PC 時代的軟體基礎。" },
+      1981: { title: "IBM PC 5150 發表", highlights: ["IBM PC 5150 發表", "MS-DOS 1.0 發布", "Xerox Star 商用圖形介面", "3Com 公司成立"], category: "hardware", hasTuring: true, turingName: "Edgar Codd", desc: "IBM PC 的發表開創了 PC 時代的標準化，奠定了未來三十年個人電腦的基礎。" },
+      1982: { title: "Compaq 與 TCP/IP 標準", highlights: ["Compaq Portable PC", "Lotus 1-2-3 試算表", "TCP/IP 成為網路標準", "Sun Microsystems 成立"], category: "software", hasTuring: true, turingName: "Stephen Cook", desc: "Compaq 成功推出 IBM PC 相容機，展示了 PC 生態系統的活力。" },
+      1983: { title: "IBM PC/XT 與 DNS 概念", highlights: ["IBM PC/XT 發表", "Apple Lisa 圖形介面", "TCP/IP 全面啟用", "DNS 概念提出"], category: "hardware", hasTuring: true, turingName: "Ken Thompson & Dennis Ritchie", desc: "IBM PC/XT 為 PC 市場確立了標準。TCP/IP 在 ARPANET 上的全面啟用標誌著網路新時代的開始。" },
+      1984: { title: "Apple Macintosh 震撼世界", highlights: ["Apple Macintosh 發表", "IBM PC/AT", "CD-ROM 商業化", "GNU 專案啟動"], category: "hardware", hasTuring: true, turingName: "Niklaus Wirth", desc: "Macintosh 以「1984」廣告震撼世界，展示了圖形介面電腦的大眾化潛力。" },
+      1985: { title: "Windows 1.0 與第一個 .com", highlights: ["Microsoft Windows 1.0", "Intel 80386 處理器", "第一個 .com 網域", "C++ 商業化"], category: "software", hasTuring: true, turingName: "Richard Karp", desc: "Windows 1.0 嘗試為 PC 帶來圖形介面。第一個 .com 網域的註冊標誌著網路商業化的開始。" },
+      1986: { title: "Compaq Deskpro 386", highlights: ["Compaq Deskpro 386", "NSFNET T1 升級", "NeXT 公司成立", "PageMaker 桌上出版"], category: "hardware", hasTuring: true, turingName: "John Hopcroft & Robert Tarjan", desc: "Compaq Deskpro 386 是第一台使用 Intel 386 處理器的 PC。" },
+      1987: { title: "Windows 2.0 與 HyperCard", highlights: ["Windows 2.0 發表", "IBM PS/2 發表", "Mac II 彩色圖形", "HyperCard 多媒體"], category: "software", hasTuring: true, turingName: "John Cocke", desc: "Windows 2.0 展示了疊加視窗的能力。HyperCard 的發明預示了未來的多媒體和網頁技術。" },
+      1988: { title: "Morris Worm 蠕蟲事件", highlights: ["Morris Worm 蠕蟲", "NeXT 電腦發表", "ANSI C 標準化", "跨大西洋光纖電纜"], category: "network", hasTuring: true, turingName: "Ivan Sutherland", desc: "Morris Worm 是第一個透過網路傳播的惡意軟體，震撼了資訊安全產業。" },
+      1989: { title: "World Wide Web 發明", highlights: ["World Wide Web 發明", "Intel 486 處理器", "Game Boy 上市"], category: "software", hasTuring: true, turingName: "William Kahan", desc: "Tim Berners-Lee 在 CERN 發明了 World Wide Web，改變了人類獲取資訊的方式。" },
+      1990: { title: "WorldWideWeb 瀏覽器", highlights: ["WorldWideWeb 瀏覽器", "Windows 3.0", "HTML/HTTP 規範", "ARPANET 除役"], category: "network", hasTuring: true, turingName: "Fernando Corbató", desc: "Tim Berners-Lee 發明了 WorldWideWeb 瀏覽器，這是第一個 Web 瀏覽器。" },
+      1991: { title: "Linux 核心誕生", highlights: ["Linux 核心誕生", "第一個網頁伺服器", "Python 語言", "Visual Basic 發表"], category: "software", hasTuring: true, turingName: "Robin Milner", desc: "Linus Torvalds 發布了 Linux 核心，開創了開源作業系統的新時代。" },
+      1992: { title: "Mosaic 瀏覽器開發", highlights: ["Mosaic 瀏覽器開發", "Windows 3.1", "ThinkPad 700C", "第一個 GSM 通話"], category: "network", hasTuring: true, turingName: "Butler Lampson", desc: "NCSA Mosaic 瀏覽器的開發預示了 Web 的爆炸性成長。" },
+      1993: { title: "NCSA Mosaic 上線", highlights: ["NCSA Mosaic 瀏覽器上線", "Intel Pentium 處理器", "WWW 免費開放", "Doom 遊戲發表"], category: "network", hasTuring: true, turingName: "Juris Hartmanis & Richard Stearns", desc: "Mosaic 瀏覽器讓普通用戶也能輕鬆上網，引爆了網際網路革命。" },
+      1994: { title: "Netscape 與電子商務元年", highlights: ["Netscape Navigator 1.0", "Amazon 創立", "Yahoo! 成立", "SSL 加密標準"], category: "network", hasTuring: true, turingName: "Edward Feigenbaum & Raj Reddy", desc: "Netscape 瀏覽器的成功讓網際網路走向大眾。Amazon 和 Yahoo! 的創立標誌著網路商業時代的開始。" },
+      1995: { title: "Java 與 Windows 95", highlights: ["Java 程式語言發表", "JavaScript 誕生", "Windows 95 上市", "Netscape 上市"], category: "software", hasTuring: true, turingName: "Manuel Blum", desc: "Java 的「一次編寫，到處執行」願景改變了軟體開發。Windows 95 的成功鞏固了 Microsoft 的霸主地位。" },
+      1996: { title: "Java 1.0 與 CSS 標準", highlights: ["Java 1.0 正式發布", "CSS 1.0 標準", "ICQ 即時通訊", "USB 1.0 規格"], category: "software", hasTuring: true, turingName: "Amir Pnueli", desc: "CSS 的發明讓網頁設計與內容分離，奠定了現代網頁設計的基礎。" },
+      1997: { title: "Deep Blue 擊敗卡斯帕洛夫", highlights: ["Deep Blue 擊敗棋王", "XML 1.0 標準", "Steve Jobs 回歸 Apple", "Google PageRank 演算法"], category: "hardware", hasTuring: true, turingName: "Douglas Engelbart", desc: "Deep Blue 在象棋比賽中擊敗世界冠軍卡斯帕洛夫，展示了人工智慧的力量。" },
+      1998: { title: "Google 公司成立", highlights: ["Google 公司成立", "iMac 發表", "Windows 98", "Red Hat IPO"], category: "software", hasTuring: true, turingName: "Jim Gray", desc: "Google 的成立改變了人類獲取資訊的方式。iMac 的成功讓 Apple 東山再起。" },
+      1999: { title: "Napster 與 Wi-Fi 標準", highlights: ["Napster 音樂分享", "Y2K 危機警告", "Wi-Fi 802.11b 標準", "PayPal 成立"], category: "network", hasTuring: true, turingName: "Frederick Brooks", desc: "Napster 开创了 P2P 檔案分享的時代，挑戰了傳統音樂產業。" },
+      2000: { title: "網路泡沫破裂與姚期智圖靈獎", highlights: [".com 泡沫破裂", "Windows 2000", "Mac OS X", "藍牙 1.0"], category: "turing", hasTuring: true, turingName: "姚期智 (Andrew Yao)", desc: "網路泡沫在這一年破裂，但淘汰了體質不佳的企業。姚期智成為第一位獲得圖靈獎的華人。" },
+      2001: { title: "iPod 與 Wikipedia", highlights: ["Mac OS X 10.0", "Windows XP", "iPod 發表", "Wikipedia 創立"], category: "hardware", hasTuring: true, turingName: "Ole-Johan Dahl & Kristen Nygaard", desc: "iPod 的發表開創了數位音樂時代。Wikipedia 的創立展示了群眾協作知識的力量。" },
+      2002: { title: "Mozilla 與 Web 標準", highlights: ["Mozilla 1.0 發布", "Apple iMac G4", "PHP 成熟", "AWS 概念醞釀"], category: "software", hasTuring: true, turingName: "Ron Rivest, Adi Shamir, Len Adleman", desc: "Mozilla 瀏覽器的開源標誌著瀏覽器戰爭的新階段。" },
+      2003: { title: "Skype 與 iTunes Store", highlights: ["Skype 發布", "iTunes Store 上線", "Safari 瀏覽器", "Android 公司成立"], category: "network", hasTuring: true, turingName: "Alan Kay", desc: "Skype 展示了 VoIP 技術的潛力，改變了通訊產業。" },
+      2004: { title: "Facebook 創立與 Web 2.0", highlights: ["Facebook 創立", "Firefox 1.0", "Gmail 發布", "Nintendo DS"], category: "software", hasTuring: true, turingName: "Vint Cerf & Bob Kahn", desc: "Facebook 的創立開啟了社群網路的新時代。Web 2.0 概念的形成強調了用戶生成內容和互動性。" },
+      2005: { title: "YouTube 與 Google Maps", highlights: ["YouTube 創立", "Google Maps 上線", "Ruby on Rails 1.0", "Arduino 開源硬體"], category: "network", hasTuring: true, turingName: "Peter Naur", desc: "YouTube 的創立改變了視訊分享的方式。Google Maps 展示了地圖與網路服務結合的無限可能。" },
+      2006: { title: "Twitter 與 AWS 雲端服務", highlights: ["Twitter 創立", "Amazon AWS 正式商用", "Intel Core 2 Duo", "Nintendo Wii"], category: "network", hasTuring: true, turingName: "Frances Allen", desc: "Twitter 的微型部落格形式開創了社群媒體的新業態。AWS 的雲端服務改變了企業建置 IT 基礎設施的方式。" },
+      2007: { title: "iPhone 重新定義手機", highlights: ["iPhone 發表", "Android 宣布", "Kindle 電子書", "GitHub 創立"], category: "hardware", hasTuring: true, turingName: "Edmund Clarke, Allen Emerson, Joseph Sifakis", desc: "iPhone 的發表徹底改變了手機產業，觸控介面和應用程式生態系統成為新標準。" },
+      2008: { title: "App Store 與 Chrome 瀏覽器", highlights: ["App Store 開幕", "Android 手機上市", "Google Chrome 發布", "Dropbox 創立"], category: "hardware", hasTuring: true, turingName: "Barbara Liskov", desc: "App Store 的商業模式改變了軟體分銷的方式。Chrome 瀏覽器的 V8 引擎為現代 Web 應用提供了強大的效能基礎。" },
+      2009: { title: "Bitcoin 創世區塊", highlights: ["Windows 7 發布", "Bitcoin 創世區塊", "Node.js 誕生", "Zoom 視訊會議"], category: "software", hasTuring: true, turingName: "Charles Thacker", desc: "比特幣的誕生開創了加密貨幣和區塊鏈技術的新時代。" },
+      2010: { title: "iPad 平板電腦元年", highlights: ["iPad 發表", "Instagram 創立", "iPhone 4 Retina", "Azure 雲端服務"], category: "hardware", hasTuring: true, turingName: "Leslie Valiant", desc: "iPad 的成功證明了觸控平板可以做為消費內容的主要裝置。" },
+      2011: { title: "Siri 語音助手與雲端同步", highlights: ["iCloud 發布", "Siri 語音助手", "IBM Watson 奪冠", "LINE/微信崛起"], category: "network", hasTuring: true, turingName: "Judea Pearl", desc: "Siri 首次將語音助手帶入大眾市場。iCloud 的發布標誌著雲端同步服務的普及。" },
+      2012: { title: "Facebook IPO 與 Raspberry Pi", highlights: ["Facebook IPO", "Raspberry Pi 發布", "Windows 8", "Google Glass"], category: "hardware", hasTuring: true, turingName: "Silvio Micali & Shafi Goldwasser", desc: "Facebook IPO 是科技公司規模的里程碑。Raspberry Pi 以低價進入教育市場，激發了創客運動。" },
+      2013: { title: "Snowden 與 Docker", highlights: ["Snowden 揭露監控", "Docker 開源", "React 開源", "比特幣突破千元"], category: "network", hasTuring: true, turingName: "Leslie Lamport", desc: "Snowden 事件揭示了政府監控的規模，引發了對隱私的全球討論。Docker 容器技術徹底改變了軟體部署的方式。" },
+      2014: { title: "Apple Swift 與 Docker 1.0", highlights: ["Heartbleed 漏洞", "Docker 1.0", "Kubernetes 開源", "Apple Swift"], category: "software", hasTuring: true, turingName: "Michael Stonebraker", desc: "Swift 語言的推出為 iOS 開發帶來了現代化工具。Kubernetes 的開源容器編排系統成為雲端原生運算的核心。" },
+      2015: { title: "TensorFlow 開源與 Windows 10", highlights: ["Windows 10 發布", "Apple Watch 上市", "TensorFlow 開源", "React Native"], category: "network", hasTuring: true, turingName: "Whitfield Diffie & Martin Hellman", desc: "TensorFlow 的開源推動了深度學習的普及。" },
+      2016: { title: "AlphaGo 擊敗李世乭", highlights: ["AlphaGo 擊敗棋王", "Oculus Rift VR", "Pokémon GO 熱潮", "iPhone 7"], category: "software", hasTuring: true, turingName: "Tim Berners-Lee", desc: "AlphaGo 的勝利標誌著 AI 的重大突破，深度學習技術展現了超越人類專家的能力。" },
+      2017: { title: "iPhone X 與 Transformer", highlights: ["iPhone X Face ID", "AMD Ryzen 處理器", "Nintendo Switch", "Attention Is All You Need"], category: "hardware", hasTuring: true, turingName: "John Hennessy & David Patterson", desc: "iPhone X 的 Face ID 展示了 3D 深度感測技術的成熟。Transformer 架構的論文為大型語言模型奠定了基礎。" },
+      2018: { title: "GDPR 生效與 BERT 突破", highlights: ["GDPR 生效", "BERT 模型突破", "GPT-1", "GitHub 被收購"], category: "network", hasTuring: true, turingName: "Yoshua Bengio, Geoffrey Hinton, Yann LeCun", desc: "GDPR 的實施標誌著資料隱私保護的新時代。BERT 模型在自然語言處理領域取得了突破性進展。" },
+      2019: { title: "GPT-2 與 Apple 轉向 ARM", highlights: ["AMD Ryzen 3000", "GPT-2 發布", "WSL 2", "Apple 宣布轉向 ARM"], category: "software", hasTuring: true, turingName: "Edwin Catmull & Pat Hanrahan", desc: "GPT-2 的强大能力引發了對 AI 安全的討論。Apple 宣布將在 Mac 上使用自研 ARM 晶片。" },
+      2020: { title: "Apple M1 與 COVID-19 數位革命", highlights: ["Apple M1 晶片", "COVID-19 疫情", "GPT-3 (1750億參數)", "PS5/Xbox Series X"], category: "hardware", hasTuring: true, turingName: "Alfred Aho & Jeffrey Ullman", desc: "Apple M1 晶片展示了 ARM 架構在個人電腦上的潛力。COVID-19 疫情加速了數位轉型。" },
+      2021: { title: "Facebook 改名 Meta", highlights: ["Apple M1 Pro/Max", "Windows 11", "Facebook 改名 Meta", "NFT 熱潮"], category: "network", hasTuring: true, turingName: "Jack Dongarra", desc: "Facebook 的改名反映了對元宇宙未來的願景。" },
+      2022: { title: "ChatGPT 發布", highlights: ["ChatGPT 發布", "Stable Diffusion", "Apple M2 晶片", "Musk 收購 Twitter"], category: "software", hasTuring: true, turingName: "Robert Metcalfe", desc: "ChatGPT 的發布標誌著生成式 AI 時代的來臨，對教育、創作和各行各業都產生了深遠影響。" },
+      2023: { title: "GPT-4 多模態與 Apple Vision Pro", highlights: ["GPT-4 多模態模型", "Apple Vision Pro", "Apple M3 晶片", "H100 GPU 缺貨"], category: "software", hasTuring: true, turingName: "Avi Wigderson", desc: "GPT-4 的多模態能力展示了大型語言模型的新境界。Apple Vision Pro 開創了空間運算的新類別。" },
+      2024: { title: "Apple Intelligence 與 AI Agent 大戰", highlights: ["Apple M4 晶片", "Nvidia Blackwell", "GPT-4o", "Sora 影片生成"], category: "hardware", hasTuring: true, turingName: "Andrew Barto & Richard Sutton", desc: "Apple Intelligence 的發布標誌著 AI 整合進作業系統的趨勢。Sora 展示了 AI 生成影片的能力。" },
+      2025: { title: "AI Agent 與 Gemini 3", highlights: ["Gemini 3", "DeepSeek R1 衝擊", "GPT-5", "Claude 4", "AI Agent 大戰"], category: "software", hasTuring: true, turingName: "Charles Bennett & Gilles Brassard", desc: "2025 年是 AI Agent 元年，各家人工智慧公司競相推出能自主執行任務的 AI 助手。" }
+    };
+
+    const turingWinners = [
+      { year: 1966, name: "Alan Perlis", nameEn: "Alan J. Perlis", reason: "對程式語言理論和編譯器設計的開創性貢獻" },
+      { year: 1967, name: "Maurice Wilkes", nameEn: "Maurice V. Wilkes", reason: "發明 EDSAC，則為第一台實際運作的儲存程式電腦" },
+      { year: 1968, name: "Richard Hamming", nameEn: "Richard W. Hamming", reason: "對數值方法、自動化編碼系統和錯誤偵測與修正碼的貢獻" },
+      { year: 1969, name: "Marvin Minsky", nameEn: "Marvin L. Minsky", reason: "對人工智慧研究的開創性貢獻" },
+      { year: 1970, name: "James Wilkinson", nameEn: "James H. Wilkinson", reason: "對數值分析的貢獻，特別是線性代數運算和誤差分析" },
+      { year: 1971, name: "John McCarthy", nameEn: "John McCarthy", reason: "對人工智慧領域的貢獻" },
+      { year: 1972, name: "Edsger Dijkstra", nameEn: "Edsger W. Dijkstra", reason: "對程式語言設計與結構化程式設計的貢獻" },
+      { year: 1973, name: "Charles Bachman", nameEn: "Charles W. Bachman", reason: "對資料庫系統技術的貢獻，特別是網路資料庫" },
+      { year: 1974, name: "Donald Knuth", nameEn: "Donald E. Knuth", reason: "對演算法分析的貢獻，以及《The Art of Computer Programming》" },
+      { year: 1975, name: "Allen Newell & Herbert Simon", nameEn: "Allen Newell & Herbert A. Simon", reason: "對人工智慧、人類智慧處理和認知科學的基礎貢獻" },
+      { year: 1976, name: "Michael Rabin & Dana Scott", nameEn: "Michael O. Rabin & Dana S. Scott", reason: "對非決定性機器的研究，以及無限狀態運算" },
+      { year: 1977, name: "John Backus", nameEn: "John W. Backus", reason: "對高階程式語言設計的貢獻，特別是 FORTRAN" },
+      { year: 1978, name: "Robert Floyd", nameEn: "Robert W. Floyd", reason: "對程式語言語義學和演算法分析的貢獻" },
+      { year: 1979, name: "Kenneth Iverson", nameEn: "Kenneth E. Iverson", reason: "對程式語言和互動系統的貢獻，特別是 APL" },
+      { year: 1980, name: "Tony Hoare", nameEn: "C.A.R. Hoare", reason: "對程式語言語義學和設計的貢獻" },
+      { year: 1981, name: "Edgar Codd", nameEn: "Edgar F. Codd", reason: "對資料庫系統的基礎，特別是關聯式模型" },
+      { year: 1982, name: "Stephen Cook", nameEn: "Stephen A. Cook", reason: "對運算複雜性理論的貢獻，特別是 NP-Complete 問題" },
+      { year: 1983, name: "Ken Thompson & Dennis Ritchie", nameEn: "Ken Thompson & Dennis M. Ritchie", reason: "發明 Unix 作業系統和 C 語言" },
+      { year: 1984, name: "Niklaus Wirth", nameEn: "Niklaus Wirth", reason: "對程式語言設計和軟體工程的貢獻，特別是 Pascal" },
+      { year: 1985, name: "Richard Karp", nameEn: "Richard M. Karp", reason: "對演算法理論的貢獻，特別是圖形演算法和多項式時間演算法" },
+      { year: 1986, name: "John Hopcroft & Robert Tarjan", nameEn: "John E. Hopcroft & Robert E. Tarjan", reason: "對資料結構和演算法分析的基礎貢獻" },
+      { year: 1987, name: "John Cocke", nameEn: "John Cocke", reason: "對最佳化編譯器研究的貢獻" },
+      { year: 1988, name: "Ivan Sutherland", nameEn: "Ivan E. Sutherland", reason: "對電腦圖學的開創性貢獻" },
+      { year: 1989, name: "William Kahan", nameEn: "William M. Kahan", reason: "對數值計算的貢獻，特別是浮點運算標準" },
+      { year: 1990, name: "Fernando Corbató", nameEn: "Fernando J. Corbató", reason: "對分時作業系統的貢獻，特別是 CTSS" },
+      { year: 1991, name: "Robin Milner", nameEn: "Robin Milner", reason: "對程式語言語義學和邏輯的貢獻，特別是 CCS" },
+      { year: 1992, name: "Butler Lampson", nameEn: "Butler W. Lampson", reason: "對分散式計算和個人計算機的貢獻" },
+      { year: 1993, name: "Juris Hartmanis & Richard Stearns", nameEn: "Juris Hartmanis & Richard E. Stearns", reason: "對計算複雜性理論的貢獻" },
+      { year: 1994, name: "Edward Feigenbaum & Raj Reddy", nameEn: "Edward A. Feigenbaum & Raj Reddy", reason: "對大型人工智慧系統的開創性貢獻" },
+      { year: 1995, name: "Manuel Blum", nameEn: "Manuel Blum", reason: "對計算複雜性理論及其在密碼學和程式驗證的應用" },
+      { year: 1996, name: "Amir Pnueli", nameEn: "Amir Pnueli", reason: "對時序邏輯和軟體驗證的貢獻" },
+      { year: 1997, name: "Douglas Engelbart", nameEn: "Douglas C. Engelbart", reason: "對互動式計算和人機介面的開創性貢獻" },
+      { year: 1998, name: "Jim Gray", nameEn: "Jim Gray", reason: "對資料庫和交易處理研究的貢獻" },
+      { year: 1999, name: "Frederick Brooks", nameEn: "Frederick P. Brooks Jr.", reason: "對電腦架構和軟體工程的貢獻，特別是 IBM System/360" },
+      { year: 2000, name: "姚期智", nameEn: "Andrew Chi-Chih Yao", reason: "對計算理論的基礎性貢獻，包括偽隨機數生成、通訊複雜性和密碼學" },
+      { year: 2001, name: "Ole-Johan Dahl & Kristen Nygaard", nameEn: "Ole-Johan Dahl & Kristen Nygaard", reason: "對物件導向程式設計的開創性貢獻，SIMULA 語言" },
+      { year: 2002, name: "Ron Rivest, Adi Shamir, Len Adleman", nameEn: "Ronald L. Rivest, Adi Shamir, Leonard M. Adleman", reason: "發明 RSA 加密演算法，對公鑰密碼學的貢獻" },
+      { year: 2003, name: "Alan Kay", nameEn: "Alan C. Kay", reason: "對物件導向程式設計和個人電腦的貢獻，Smalltalk 語言" },
+      { year: 2004, name: "Vint Cerf & Bob Kahn", nameEn: "Vint Cerf & Robert Kahn", reason: "對網際網路通訊協定 TCP/IP 的發明" },
+      { year: 2005, name: "Peter Naur", nameEn: "Peter Naur", reason: "對程式語言理論和編譯器設計的貢獻，Backus-Naur Form" },
+      { year: 2006, name: "Frances Allen", nameEn: "Frances E. Allen", reason: "對優化編譯器技術和自動化解譯分析的貢獻" },
+      { year: 2007, name: "Edmund Clarke, Allen Emerson, Joseph Sifakis", nameEn: "Edmund M. Clarke, E. Allen Emerson, Joseph Sifakis", reason: "對模型檢測技術的貢獻" },
+      { year: 2008, name: "Barbara Liskov", nameEn: "Barbara Liskov", reason: "對資料抽象和分散式計算的貢獻，Liskov 替換原則" },
+      { year: 2009, name: "Charles Thacker", nameEn: "Charles P. Thacker", reason: "對雷射印表機、乙太網路和個人計算機的貢獻" },
+      { year: 2010, name: "Leslie Valiant", nameEn: "Leslie Valiant", reason: "對計算學習理論的貢獻，PAC 學習模型" },
+      { year: 2011, name: "Judea Pearl", nameEn: "Judea Pearl", reason: "對人工智慧和因果推理的貢獻，貝氏網路" },
+      { year: 2012, name: "Silvio Micali & Shafi Goldwasser", nameEn: "Silvio Micali & Shafi Goldwasser", reason: "對密碼學和複雜度理論的貢獻" },
+      { year: 2013, name: "Leslie Lamport", nameEn: "Leslie Lamport", reason: "對分散式系統和並行程式設計的貢獻" },
+      { year: 2014, name: "Michael Stonebraker", nameEn: "Michael Stonebraker", reason: "對現代資料庫系統的貢獻" },
+      { year: 2015, name: "Whitfield Diffie & Martin Hellman", nameEn: "Whitfield Diffie & Martin E. Hellman", reason: "發明公鑰密碼學" },
+      { year: 2016, name: "Tim Berners-Lee", nameEn: "Tim Berners-Lee", reason: "發明 World Wide Web" },
+      { year: 2017, name: "John Hennessy & David Patterson", nameEn: "John L. Hennessy & David A. Patterson", reason: "對精簡指令集電腦(RISC)的貢獻" },
+      { year: 2018, name: "Yoshua Bengio, Geoffrey Hinton, Yann LeCun", nameEn: "Yoshua Bengio, Geoffrey Hinton, Yann LeCun", reason: "對深度學習的突破性貢獻" },
+      { year: 2019, name: "Edwin Catmull & Pat Hanrahan", nameEn: "Edwin Catmull & Pat Hanrahan", reason: "對 3D 圖學和 GPU 運算的貢獻" },
+      { year: 2020, name: "Alfred Aho & Jeffrey Ullman", nameEn: "Alfred V. Aho & Jeffrey D. Ullman", reason: "對程式語言理論和編譯器的貢獻" },
+      { year: 2021, name: "Jack Dongarra", nameEn: "Jack Dongarra", reason: "對數值分析和線性代數軟體庫的貢獻" },
+      { year: 2022, name: "Robert Metcalfe", nameEn: "Robert M. Metcalfe", reason: "發明乙太網路" },
+      { year: 2023, name: "Avi Wigderson", nameEn: "Avi Wigderson", reason: "對計算複雜性理論的貢獻" },
+      { year: 2024, name: "Andrew Barto & Richard Sutton", nameEn: "Andrew G. Barto & Richard S. Sutton", reason: "對強化學習的基礎貢獻" },
+      { year: 2025, name: "Charles Bennett & Gilles Brassard", nameEn: "Charles H. Bennett & Gilles Brassard", reason: "對量子計算和量子密碼學的開創性貢獻" }
+    ];
+
+    let currentFilter = 'all';
+    let currentDecade = null;
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+    }
+
+    function renderYearCards(filter = 'all', decade = null, search = '') {
+      const grid = document.getElementById('yearGrid');
+      const noResults = document.getElementById('noResults');
+      grid.innerHTML = '';
+
+      let filtered = Object.entries(yearData);
+
+      if (search) {
+        const s = search.toLowerCase();
+        filtered = filtered.filter(([year, data]) =>
+          year.includes(s) || data.title.toLowerCase().includes(s) ||
+          data.desc.toLowerCase().includes(s) ||
+          data.highlights.some(h => h.toLowerCase().includes(s))
+        );
+      }
+
+      if (decade) {
+        const start = parseInt(decade);
+        filtered = filtered.filter(([year]) => {
+          const y = parseInt(year);
+          return y >= start && y <= start + 9;
+        });
+      }
+
+      if (filter !== 'all') {
+        filtered = filtered.filter(([, data]) =>
+          filter === 'turing' ? data.hasTuring : data.category === filter
+        );
+      }
+
+      if (filtered.length === 0) {
+        noResults.style.display = 'block';
+        return;
+      }
+      noResults.style.display = 'none';
+
+      filtered.forEach(([year, data]) => {
+        const card = document.createElement('div');
+        card.className = `year-card${data.hasTuring ? ' highlight-card' : ''}`;
+        card.onclick = () => openModal(year);
+        const tags = data.highlights.slice(0, 3).map(h =>
+          `<span class="tag">${h.length > 15 ? h.substring(0, 15) + '...' : h}</span>`
+        ).join('');
+        card.innerHTML = `
+          ${data.hasTuring ? `<span class="turing-badge">🏆 ${data.turingName}</span>` : ''}
+          <div class="year">${year}</div>
+          <div class="title">${data.title}</div>
+          <div class="desc">${data.desc}</div>
+          <div class="tags">${tags}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderTuringWinners() {
+      const grid = document.getElementById('turingGrid');
+      grid.innerHTML = '';
+      turingWinners.forEach(winner => {
+        const card = document.createElement('div');
+        card.className = 'turing-card';
+        card.innerHTML = `
+          <div class="year">${winner.year} 年</div>
+          <div class="name">${winner.name}</div>
+          <div class="name-en">${winner.nameEn}</div>
+          <div class="reason">${winner.reason}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderStats() {
+      const grid = document.getElementById('statsGrid');
+      const milestones = [
+        { year: 1950, title: "圖靈測試", desc: "AI 思想的起源" },
+        { year: 1969, title: "ARPANET", desc: "網際網路誕生" },
+        { year: 1971, title: "4004 處理器", desc: "微處理器時代" },
+        { year: 1984, title: "Macintosh", desc: "圖形介面大眾化" },
+        { year: 1989, title: "World Wide Web", desc: "網路革命開始" },
+        { year: 1995, title: "Java & Windows 95", desc: "軟體新時代" },
+        { year: 2007, title: "iPhone", desc: "智慧手機革命" },
+        { year: 2022, title: "ChatGPT", desc: "生成式 AI 時代" }
+      ];
+      grid.innerHTML = '';
+      milestones.forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'turing-card';
+        card.onclick = () => openModal(m.year.toString());
+        card.style.cursor = 'pointer';
+        card.innerHTML = `
+          <div class="year">${m.year} 年</div>
+          <div class="name">${m.title}</div>
+          <div class="name-en">${m.desc}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function updateTimeline(year) {
+      const progress = ((year - 1950) / (2025 - 1950)) * 100;
+      document.getElementById('timelineProgress').style.width = progress + '%';
+      document.getElementById('yearDisplay').textContent = year;
+    }
+
+    function renderTimelinePreview(year) {
+      const grid = document.getElementById('modalPreview');
+      grid.innerHTML = '';
+      const data = yearData[year];
+      if (!data) return;
+      const card = document.createElement('div');
+      card.className = `year-card${data.hasTuring ? ' highlight-card' : ''}`;
+      card.onclick = () => openModal(year);
+      const tags = data.highlights.slice(0, 3).map(h =>
+        `<span class="tag">${h.length > 15 ? h.substring(0, 15) + '...' : h}</span>`
+      ).join('');
+      card.innerHTML = `
+        ${data.hasTuring ? `<span class="turing-badge">🏆 ${data.turingName}</span>` : ''}
+        <div class="year">${year}</div>
+        <div class="title">${data.title}</div>
+        <div class="desc">${data.desc}</div>
+        <div class="tags">${tags}</div>
+      `;
+      grid.appendChild(card);
+    }
+
+    function openModal(year) {
+      const data = yearData[year];
+      if (!data) return;
+      document.getElementById('modalTitle').textContent = `${year} 年`;
+      document.getElementById('modalBody').innerHTML = `
+        <p><strong>主題：</strong>${data.title}</p>
+        <p>${data.desc}</p>
+        <h3>重要事件</h3>
+        <ul>${data.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
+        <h3>相關文章</h3>
+        <p>硬體：<a href="${year}/hardware1.html">${year}/hardware1.md</a></p>
+        <p>軟體：<a href="${year}/software1.html">${year}/software1.md</a></p>
+        <p>網路：<a href="${year}/network1.html">${year}/network1.md</a></p>
+        ${data.hasTuring ? `<p>圖靈獎：<a href="${year}/turing.html">${year}/turing.md</a></p>` : ''}
+        <p>前言：<a href="${year}/preface.html">${year}/preface.md</a></p>
+      `;
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      renderYearCards(currentFilter, currentDecade, e.target.value);
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderYearCards(currentFilter, currentDecade, document.getElementById('searchInput').value);
+      });
+    });
+
+    document.querySelectorAll('.decade-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const d = btn.dataset.decade;
+        currentDecade = currentDecade === d ? null : d;
+        btn.classList.toggle('active', currentDecade !== null);
+        renderYearCards(currentFilter, currentDecade, document.getElementById('searchInput').value);
+      });
+    });
+
+    document.getElementById('timelineSlider').addEventListener('input', (e) => {
+      const year = e.target.value;
+      updateTimeline(year);
+      renderTimelinePreview(year);
+    });
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    renderYearCards();
+    renderTuringWinners();
+    renderStats();
+    updateTimeline(2000);
+    renderTimelinePreview(2000);
+  </script>
+</body>
+</html>
