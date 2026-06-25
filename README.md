@@ -8,6 +8,22 @@
 
 | 年份 | 重點 |
 |------|------|
+| [1950](1950/README.md) | [圖靈測試][1950-turing]、[SEAC 首部儲存程式][1950-seac]、[Whirlwind 即時計算][1950-whirlwind]、[ERA 1101 商業電腦][1950-era] |
+| [1951](1951/README.md) | [UNIVAC I 交付][1951-univac]、[LEO I 商業電腦][1951-leo]、[Ferranti Mark I][1951-ferranti]、[Short Code 語言][1951-shortcode] |
+| [1952](1952/README.md) | [IBM 701 宣布][1952-ibm701]、[UNIVAC 預測大選][1952-univac-prediction]、[A-0 編譯器][1952-a0compiler]、[EDVAC 運轉][1952-edvac] |
+| [1953](1953/README.md) | [IBM 650 發表][1953-ibm650]、[EDVAC 完工][1953-edvac]、[IBM 701 出貨][1953-ibm701]、[LEO I 商業計算][1953-leo] |
+| [1954](1954/README.md) | [IBM 650 量產][1954-ibm650]、[TRADIC 電晶體電腦][1954-tradic]、[FORTRAN 啟動][1954-fortran]、[磁芯記憶體][1954-coremem] |
+| [1955](1955/README.md) | [IBM 704 浮點][1955-ibm704]、[Whirlwind 磁芯升級][1955-whirlwind]、[首套商業薪資][1955-payroll]、[SAGE 原型][1955-sage] |
+| [1956](1956/README.md) | [RAMAC 磁碟][1956-ramac]、[TX-0 電晶體電腦][1956-tx0]、[達特茅斯 AI 會議][1956-dartmouth]、[FORTRAN 開發][1956-fortran] |
+| [1957](1957/README.md) | [FORTRAN I 發布][1957-fortran]、[IBM 709][1957-ibm709]、[史普尼克][1957-sputnik]、[SHARE 成立][1957-share] |
+| [1958](1958/README.md) | [積體電路發明][1958-ic]、[ALGOL 58][1958-algol]、[LISP 萌芽][1958-lisp]、[Fairchild 創立][1958-fairchild] |
+| [1959](1959/README.md) | [IBM 1401 宣布][1959-ibm1401]、[TRANSAC S-2000][1959-transac]、[COBOL 開發][1959-cobol]、[PDP-1 原型][1959-pdp1] |
+| [1960](1960/README.md) | [PDP-1 交付][1960-pdp1]、[IBM 1401][1960-ibm1401]、[ALGOL 60][1960-algol]、[COBOL 完成][1960-cobol] |
+| [1961](1961/README.md) | [IBM 7030 Stretch][1961-stretch]、[CTSS 分時][1961-ctss]、[Project MAC 資助][1961-projectmac]、[IBM 1401 普及][1961-ibm1401] |
+| [1962](1962/README.md) | [Telstar 衛星][1962-telstar]、[SpaceWar!][1962-spacewar]、[IBM 1311 磁碟][1962-ibm1311]、[Atlas 虛擬記憶體][1962-atlas] |
+| [1963](1963/README.md) | [滑鼠發明][1963-mouse]、[ASCII 標準化][1963-ascii]、[CTSS][1963-ctss]、[恩格巴特 NLS][1963-nls] |
+| [1964](1964/README.md) | [IBM System/360][1964-s360]、[CDC 6600][1964-cdc6600]、[BASIC 語言][1964-basic]、[PL/I][1964-pli] |
+| [1965](1965/README.md) | [PDP-8 迷你電腦][1965-pdp8]、[System/360 出貨][1965-s360]、[Project MAC][1965-projectmac]、[摩爾定律][1965-moore] |
 | [1966](1966/README.md) | [首位圖靈獎（Alan Perlis）][1966-turing]、[HP 2116A 首部電腦][1966-hp]、[DRAM 發明][1966-dram]、[ELIZA][1966-eliza]、[BCPL][1966-bcpl]、[ARPANET 構想][1966-arpanet] |
 | [1967](1967/README.md) | [Simula 67 物件導向誕生][1967-simula]、[LOGO 語言][1967-logo]、[軟碟發明][1967-floppy]、[浮閘電晶體][1967-floatgate]、[ARPANET 設計文件][1967-arpanet-design]、[觸控螢幕][1967-touch] |
 | [1968](1968/README.md) | [Engelbart「所有展示之母」][1968-engelbart]、[Intel 創立][1968-intel]、[Dijkstra「GOTO 有害」][1968-goto]、[結構化程式設計][1968-structured]、[DoD 研究網路][1968-dod] |
@@ -68,6 +84,71 @@
 | [2023](2023/README.md) | [GPT-4 多模態][2023-gpt-4]、[Apple Vision Pro][2023-apple-vision-pro]、[M3 晶片（3nm）][2023-m3]、[H100 GPU 缺貨][2023-h100]、[AI 安全峰會][2023-ai-safety-summit] |
 | [2024](2024/README.md) | [Apple M4][2024-apple-m4]、[Nvidia Blackwell][2024-nvidia-blackwell]、[GPT-4o][2024-gpt-4o]、[Sora][2024-sora]、[Apple Intelligence][2024-apple-intelligence]、[o1 推理模型][2024-o1]、[歐盟 AI Act][2024-eu-ai-act] |
 | [2025](2025/README.md) | [Gemini 3][2025-gemini-3]、[DeepSeek R1 衝擊][2025-deepseek-r1]、[GPT-5][2025-gpt-5]、[Claude 4][2025-claude-4]、[Blackwell Ultra][2025-blackwell-ultra]、[Apple M5][2025-apple-m5]、[AI Agent 大戰][2025-ai-agent] |
+
+[1950-turing]: 1950/software1.md
+[1950-seac]: 1950/hardware1.md
+[1950-whirlwind]: 1950/hardware4.md
+[1950-era]: 1950/hardware3.md
+[1951-univac]: 1951/hardware1.md
+[1951-leo]: 1951/hardware2.md
+[1951-ferranti]: 1951/hardware3.md
+[1951-shortcode]: 1951/software2.md
+[1952-ibm701]: 1952/hardware1.md
+[1952-univac-prediction]: 1952/hardware4.md
+[1952-a0compiler]: 1952/software1.md
+[1952-edvac]: 1952/hardware2.md
+[1953-ibm650]: 1953/hardware2.md
+[1953-edvac]: 1953/hardware3.md
+[1953-ibm701]: 1953/hardware1.md
+[1953-leo]: 1953/hardware5.md
+[1954-ibm650]: 1954/hardware1.md
+[1954-tradic]: 1954/hardware2.md
+[1954-fortran]: 1954/software1.md
+[1954-coremem]: 1954/hardware5.md
+[1955-ibm704]: 1955/hardware1.md
+[1955-whirlwind]: 1955/hardware3.md
+[1955-payroll]: 1955/software2.md
+[1955-sage]: 1955/hardware2.md
+[1956-ramac]: 1956/hardware1.md
+[1956-tx0]: 1956/hardware2.md
+[1956-dartmouth]: 1956/software2.md
+[1956-fortran]: 1956/software1.md
+[1957-fortran]: 1957/software1.md
+[1957-ibm709]: 1957/hardware1.md
+[1957-sputnik]: 1957/network1.md
+[1957-share]: 1957/software2.md
+[1958-ic]: 1958/hardware1.md
+[1958-algol]: 1958/software1.md
+[1958-lisp]: 1958/software2.md
+[1958-fairchild]: 1958/hardware5.md
+[1959-ibm1401]: 1959/hardware1.md
+[1959-transac]: 1959/hardware2.md
+[1959-cobol]: 1959/software1.md
+[1959-pdp1]: 1959/hardware5.md
+[1960-pdp1]: 1960/hardware1.md
+[1960-ibm1401]: 1960/hardware2.md
+[1960-algol]: 1960/software1.md
+[1960-cobol]: 1960/software2.md
+[1961-stretch]: 1961/hardware1.md
+[1961-ctss]: 1961/software1.md
+[1961-projectmac]: 1961/network2.md
+[1961-ibm1401]: 1961/hardware3.md
+[1962-telstar]: 1962/network1.md
+[1962-spacewar]: 1962/software1.md
+[1962-ibm1311]: 1962/hardware1.md
+[1962-atlas]: 1962/hardware3.md
+[1963-mouse]: 1963/hardware2.md
+[1963-ascii]: 1963/hardware4.md
+[1963-ctss]: 1963/software1.md
+[1963-nls]: 1963/software3.md
+[1964-s360]: 1964/hardware1.md
+[1964-cdc6600]: 1964/hardware2.md
+[1964-basic]: 1964/software1.md
+[1964-pli]: 1964/software3.md
+[1965-pdp8]: 1965/hardware1.md
+[1965-s360]: 1965/hardware3.md
+[1965-projectmac]: 1965/network1.md
+[1965-moore]: 1965/hardware5.md
 
 [1966-turing]: 1966/turing.md
 [1966-hp]: 1966/hardware1.md
@@ -385,7 +466,18 @@
 
 ## 格式說明
 
-每期年鑑包含 19 個檔案：
+**1950-1965 年（無圖靈獎）**：每期年鑑包含 18 個檔案（無 turing.md）
+
+| 類別 | 檔案 | 說明 |
+|------|------|------|
+| README | `README.md` | 目錄（含各文章描述性標題） |
+| 前言 | `preface.md` | 年度總覽 |
+| 硬體發展（含電子技術） | `hardware1.md` ~ `hardware5.md` | 5 篇硬體技術文章 |
+| 軟體發展（含程式） | `software1.md` ~ `software5.md` | 5 篇軟體/程式語言文章 |
+| 網路發展（含多媒體） | `network1.md` ~ `network5.md` | 5 篇網路/多媒體文章 |
+| 歷史穿梭 | `history.md` | 過去與未來的連結 |
+
+**1966-2025 年（有圖靈獎）**：每期年鑑包含 19 個檔案
 
 | 類別 | 檔案 | 說明 |
 |------|------|------|
