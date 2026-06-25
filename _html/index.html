@@ -654,7 +654,7 @@
   </div>
 
   <footer>
-    <p>資訊科技年鑑 | 由 <a href="https://opencode.ai/" target="_blank">OpenCode</a> + AI 撰寫</p>
+    <p>資訊科技年鑑 | <a href="https://github.com/cccmag/aicomputer" target="_blank">GitHub</a> | 由 <a href="https://opencode.ai/" target="_blank">OpenCode</a> + AI 撰寫</p>
   </footer>
 
   <script>
@@ -944,11 +944,11 @@
         <h3>重要事件</h3>
         <ul>${data.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
         <h3>相關文章</h3>
-        <p>硬體：<a href="${year}/hardware1.html">${year}/hardware1.md</a></p>
-        <p>軟體：<a href="${year}/software1.html">${year}/software1.md</a></p>
-        <p>網路：<a href="${year}/network1.html">${year}/network1.md</a></p>
-        ${data.hasTuring ? `<p>圖靈獎：<a href="${year}/turing.html">${year}/turing.md</a></p>` : ''}
-        <p>前言：<a href="${year}/preface.html">${year}/preface.md</a></p>
+        <p>硬體：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/hardware1.md" target="_blank">${year}/hardware1.md</a></p>
+        <p>軟體：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/software1.md" target="_blank">${year}/software1.md</a></p>
+        <p>網路：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/network1.md" target="_blank">${year}/network1.md</a></p>
+        ${data.hasTuring ? `<p>圖靈獎：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/turing.md" target="_blank">${year}/turing.md</a></p>` : ''}
+        <p>前言：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/preface.md" target="_blank">${year}/preface.md</a></p>
       `;
       document.getElementById('modalOverlay').classList.add('active');
     }
