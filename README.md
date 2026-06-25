@@ -4,6 +4,10 @@
 
 目前的 AI 採用 [OpenCode](https://opencode.ai/) + Big Pickle + MiniMax2.7 模型
 
+## 網頁入口
+
+* [資訊科技年鑑 -- 互動網頁](https://cccmag.github.io/aicomputer/_html/index.html)
+
 ## 年鑑列表
 
 | 年份 | 重點 |
