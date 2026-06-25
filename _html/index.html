@@ -800,6 +800,85 @@
       { year: 2025, name: "Charles Bennett & Gilles Brassard", nameEn: "Charles H. Bennett & Gilles Brassard", reason: "對量子計算和量子密碼學的開創性貢獻" }
     ];
 
+    const articleTitles = {
+      1950: { preface: "1950 年：圖靈測試、儲存程式計算機與人工智慧的開端", hardware1: "SEAC — 美國第一部儲存程式計算機", software1: "圖靈〈Computing Machinery and Intelligence〉— 人工智慧奠基論文", network1: "電傳打字通訊 — Baudot 碼與二戰時期的電傳網路" },
+      1951: { preface: "1951 年：商用計算機時代的開端", hardware1: "UNIVAC I 交付人口普查局 — 商用計算機史的第一頁", software1: "UNIVAC C-10 指令碼 — 貝蒂·霍伯頓的首個鍵盤指令系統", network1: "UNIVAC UNISERVO 磁帶機 — 首款商用電腦磁帶儲存" },
+      1952: { preface: "1952 年：IBM 正式登場、編譯器誕生、公眾認識電腦", hardware1: "IBM 701 宣布 — 國防計算機的誕生", software1: "葛麗絲·霍普的 A-0 編譯器 — 軟體工程革命的起點", network1: "UNIVAC I 資料處理 — 磁帶機與卡片轉磁帶工作流程" },
+      1953: { preface: "1953 年：計算機產業的黎明", hardware1: "IBM 701 Electronic Data Processing Machine — 國防計算機", software1: "IBM 701 程式設計 — 機器語言與絕對二進位", network1: "IBM 卡片資料處理 — 80 欄打孔卡標準" },
+      1954: { preface: "一九五四年——量產、電晶體與語言的起點", hardware1: "IBM 650 磁鼓計算機：第一部量產電腦", software1: "FORTRAN 專案在 IBM 啟動", network1: "SAGE 設計階段與 IBM 合約" },
+      1955: { preface: "一九五五年——浮點、即時與大規模系統", hardware1: "IBM 704：首款量產配備浮點硬體的電腦", software1: "FORTRAN 開發中期：巴克斯團隊的進展", network1: "SAGE 防空網路與雷達資料傳真" },
+      1956: { preface: "一九五六年——儲存、電晶體與智慧的萌芽", hardware1: "IBM 305 RAMAC：第一部配備磁碟機的電腦", software1: "FORTRAN 編譯器持續開發", network1: "SAGE 開發網路與脈碼調變" },
+      1957: { preface: "高階語言的誕生與太空競賽的起點", hardware1: "IBM 709 發表：電晶體化大型主機的開端", software1: "FORTRAN I 編譯器發布：高階語言的誕生", network1: "史普尼克一號發射：太空競賽與 ARPA 的誕生" },
+      1958: { preface: "積體電路誕生之年", hardware1: "Jack Kilby 在德州儀器發明積體電路", software1: "ALGOL 58：國際代數語言的誕生", network1: "SAGE 網路：第一個數位電腦網路" },
+      1959: { preface: "電晶體化電腦時代來臨", hardware1: "IBM 1401 資料處理系統", software1: "COBOL 開發啟動：CODASYL 委員會成立", network1: "SAGE 系統測試：雷達與電腦的即時連接" },
+      1960: { preface: "1960 年資訊科技前言", hardware1: "DEC PDP-1：小型電腦紀元的開端", software1: "ALGOL 60：結構化程式語言的基石", network1: "第一個線上訂位系統：日本近鐵的革命" },
+      1961: { preface: "1961 年資訊科技前言", hardware1: "IBM 7030 Stretch：超級電腦的先行者", software1: "CTSS 分時系統：多人互動的革命", network1: "Project MAC 提案：ARPA 資助的起點" },
+      1962: { preface: "1962 年資訊科技前言", hardware1: "IBM 1311 磁碟機：可移除式儲存的革命", software1: "SpaceWar!：電子遊戲的始祖", network1: "Telstar 衛星：全球通訊革命的起點" },
+      1963: { preface: "1963 年資訊科技年鑑：前言", hardware1: "IBM 7094：System/360 之前最強大的科學電腦", software1: "CTSS：MIT 的第一個分時作業系統", network1: "ARPA 資訊處理技術辦公室：Licklider 的願景" },
+      1964: { preface: "1964 年資訊科技年鑑：前言", hardware1: "IBM System/360 發表：五十億美元的豪賭", software1: "BASIC 語言的誕生：為初學者設計的程式語言", network1: "IBM System/360 的資料通信能力" },
+      1965: { preface: "1965 年資訊科技年鑑：前言", hardware1: "PDP-8：迷你電腦的革命起點", software1: "Multics 的開端：分時作業系統的宏大願景", network1: "Project MAC：MIT 大規模分時系統" },
+      1966: { preface: "1966 年資訊科技年鑑：前言", hardware1: "HP 2116A：從儀器控制器到第一部電腦", software1: "ELIZA：當電腦扮演心理治療師", network1: "ARPANET 的誕生：二十分鐘的靈感", turing: "首位圖靈獎得主：Alan J. Perlis" },
+      1967: { preface: "1967 年資訊科技年鑑：前言", hardware1: "IBM 軟碟的發明：儲存媒體的革命", software1: "Simula 67：物件導向的誕生", network1: "ARPANET 的設計文件：Larry Roberts 在 SOSP 的提案", turing: "1967 年圖靈獎：Maurice Wilkes" },
+      1968: { preface: "1968 年資訊科技年鑑：前言", hardware1: "Intel 的創立：半導體記憶體的野心", software1: "Dijkstra 的怒吼：「Go To 語句是有害的」", network1: "「所有展示之母」：Engelbart 改變世界的 90 分鐘", turing: "1968 年圖靈獎：Richard Hamming" },
+      1969: { preface: "1969 年資訊科技年鑑：前言", hardware1: "CDC 7600：超級電腦時代的王者", software1: "Unix 的誕生：從 Space Travel 到作業系統", network1: "ARPANET 的第一次呼吸：1969 年 10 月 29 日", turing: "1969 年圖靈獎：Marvin Minsky" },
+      1970: { preface: "1970 年資訊科技年鑑：前言", hardware1: "DEC PDP-11/20 發表：16位元迷你電腦的里程碑", software1: "Pascal 語言的誕生：結構化程式設計的典範", network1: "ARPANET NCP 協定：網路標準化的關鍵一步", turing: "1970 年圖靈獎：James H. Wilkinson" },
+      1971: { preface: "1971 年資訊科技年鑑：前言", hardware1: "Intel 4004：第一款微處理器", software1: "John McCarthy 與公用計算概念：雲端運算的種子", network1: "電子郵件的發明：Ray Tomlinson 與 @", turing: "1971 年圖靈獎：John McCarthy" },
+      1972: { preface: "1972 年資訊科技年鑑：前言", hardware1: "HP-35：工程師的口袋革命", software1: "C 語言的誕生：貝爾實驗室的革命", network1: "Cerf 與 Kahn 開始 TCP/IP 設計", turing: "1972 年圖靈獎：Edsger Dijkstra" },
+      1973: { preface: "1973 年資訊科技年鑑：前言", hardware1: "Xerox Alto：第一台 GUI 電腦", software1: "Smalltalk-72 登上 Alto", network1: "Ethernet 的發明：5 月 22 日的備忘錄", turing: "1973 年圖靈獎：Charles Bachman" },
+      1974: { preface: "1974 年資訊科技年鑑：網路與微處理器的交會", hardware1: "Intel 8080：個人電腦的心臟", software1: "CP/M 的誕生：第一個微電腦作業系統", network1: "TCP/IP 的誕生：Cerf 與 Kahn 的里程碑論文", turing: "1974 年圖靈獎：Donald Knuth" },
+      1975: { preface: "1975 年資訊科技年鑑：個人電腦的黎明", hardware1: "Altair 8800：微電腦革命的起點", software1: "Altair BASIC 與 Microsoft 的誕生", network1: "Ethernet 的誕生：區域網路的基礎", turing: "圖靈獎得主：Allen Newell 與 Herbert A. Simon" },
+      1976: { preface: "1976 年資訊科技年鑑：前言", hardware1: "Apple I：個人電腦的序章", software1: "Diffie-Hellman 密鑰交換：公鑰密碼學的誕生", network1: "ARPANET 的擴張：從 15 到 60 個節點", turing: "1976 年圖靈獎：Michael Rabin 與 Dana Scott" },
+      1977: { preface: "1977 年資訊科技年鑑：前言", hardware1: "Apple II：個人電腦典範的誕生", software1: "DES 加密標準正式上路", network1: "TCP/IP 三網路連線：網際網路的誕生", turing: "1977 年圖靈獎：John Backus" },
+      1978: { preface: "1978 年資訊科技年鑑：前言", hardware1: "Intel 8086：x86 架構的起點", software1: "VisiCalc 的構想：殺手級應用的誕生", network1: "ARPANET 超過 100 台主機", turing: "1978 年圖靈獎：Robert Floyd" },
+      1979: { preface: "1979 年資訊科技年鑑：前言", hardware1: "Motorola 68000：16/32 位元的革命", software1: "VisiCalc：第一個殺手級應用", network1: "UUCP 與 Usenet 通訊：分佈式討論的起源", turing: "1979 年圖靈獎：Kenneth Iverson" },
+      1980: { preface: "1980 年資訊科技年鑑：前言", hardware1: "Sinclair ZX80：百元電腦的夢想", software1: "86-DOS 收購：Microsoft 的作業系統賭注", network1: "DIX Ethernet 2.0：10 Mbps 的統一規範", turing: "1980 年圖靈獎：Tony Hoare" },
+      1981: { preface: "1981 年資訊科技年鑑：前言", hardware1: "IBM PC 5150：改變世界的個人電腦", software1: "MS-DOS 1.0：PC 的作業系統", network1: "SMTP 與電子郵件架構的誕生", turing: "1981 年圖靈獎：Edgar Codd" },
+      1982: { preface: "1982 年資訊科技年鑑：前言", hardware1: "Compaq Portable：第一台 IBM PC 相容機", software1: "Lotus 1-2-3：整合式軟體的殺手級應用", network1: "TCP/IP 正式成為 ARPANET 標準", turing: "1982 年圖靈獎：Stephen Cook" },
+      1983: { preface: "1983 年資訊科技年鑑：前言", hardware1: "IBM PC/XT：內建硬碟的個人電腦", software1: "Microsoft Word 1.0：所見即所得的文字處理", network1: "TCP/IP 正式啟用：網際網路的誕生日", turing: "1983 年圖靈獎：Ken Thompson & Dennis Ritchie" },
+      1984: { preface: "1984 年資訊科技年鑑：前言", hardware1: "Apple Macintosh：1984 改變一切", software1: "GNU 專案啟動：自由軟體運動的開端", network1: "DNS 設計定案：Mockapetris 的分散式命名", turing: "1984 年圖靈獎：Niklaus Wirth" },
+      1985: { preface: "1985 年資訊科技年鑑：前言", hardware1: "Intel 80386：32 位元時代的開端", software1: "Microsoft Windows 1.0：GUI 的微軟時代", network1: "第一個 .com 域名：Symbolics.com 的歷史意義", turing: "1985 年圖靈獎：Richard Karp" },
+      1986: { preface: "1986 年資訊科技年鑑：前言", hardware1: "Compaq Deskpro 386：超車 IBM 的關鍵一役", software1: "PageMaker 1.0：桌上出版產業的誕生", network1: "NSFNET T1 升級：骨幹頻寬的躍進", turing: "1986 年圖靈獎：John Hopcroft & Robert Tarjan" },
+      1987: { preface: "1987 年資訊科技年鑑：前言", hardware1: "IBM PS/2：PC 標準的重新定義", software1: "Microsoft Windows 2.0：重疊視窗的登場", network1: "T1 連線商業化：網際網路基礎建設的起步", turing: "1987 年圖靈獎：John Cocke" },
+      1988: { preface: "1988 年資訊科技年鑑：前言", hardware1: "NeXT 電腦：賈伯斯的藝術品", software1: "ANSI C 標準化：C 語言的統一", network1: "Morris Worm：第一個網際網路蠕蟲", turing: "1988 年圖靈獎：Ivan Sutherland" },
+      1989: { preface: "1989 年資訊科技年鑑：前言", hardware1: "Intel 486：整合數學協同處理器的里程碑", software1: "World Wide Web 提案：改變世界的備忘錄", network1: "HD 電視展示：高畫質時代的序幕", turing: "1989 年圖靈獎：William Kahan" },
+      1990: { preface: "1990 年資訊科技年鑑：前言", hardware1: "Intel 386SL：筆記型電腦的省電晶片", software1: "Microsoft Windows 3.0：終於成功的圖形介面", network1: "Archie：第一個網路搜尋引擎", turing: "1990 年圖靈獎：Fernando Corbató" },
+      1991: { preface: "1991 年資訊科技年鑑：前言", hardware1: "Intel 486 的成熟與 586 的醞釀", software1: "Linux 核心：Linus Torvalds 的個人專案", network1: "World Wide Web 公開：改變世界的八月", turing: "1991 年圖靈獎：Robin Milner" },
+      1992: { preface: "1992 年資訊科技年鑑：前言", hardware1: "IBM ThinkPad 700C：小紅點的誕生", software1: "Windows 3.1：Microsoft 的里程碑", network1: "Mosaic 瀏覽器的開發起點", turing: "1992 年圖靈獎：Butler Lampson" },
+      1993: { preface: "1993 年資訊科技年鑑：前言", hardware1: "Intel Pentium 處理器：第五代 x86 架構", software1: "NCSA Mosaic：引爆網路的瀏覽器", network1: "CERN 宣布 WWW 免費開放：公共領域的禮物", turing: "1993 年圖靈獎：Juris Hartmanis & Richard Stearns" },
+      1994: { preface: "1994 年資訊科技年鑑：前言", hardware1: "Power Macintosh：Apple 轉向 PowerPC", software1: "Netscape Navigator 1.0：商業瀏覽器的誕生", network1: "SSL 加密協定：安全網路的開端", turing: "1994 年圖靈獎：Edward Feigenbaum & Raj Reddy" },
+      1995: { preface: "1995 年資訊科技年鑑：前言", hardware1: "Pentium Pro 處理器：P6 架構的誕生", software1: "Java 語言的誕生：一次編寫，到處執行", network1: "Netscape IPO：網際網路商業化的號角", turing: "1995 年圖靈獎：Manuel Blum" },
+      1996: { preface: "1996 年資訊科技年鑑：前言", hardware1: "Nokia 9000 Communicator：智慧型手機的先驅", software1: "Java 1.0 正式版：跨平台語言的承諾", network1: "ICQ：即時通訊的普及化", turing: "1996 年圖靈獎：Amir Pnueli" },
+      1997: { preface: "1997 年資訊科技年鑑：前言", hardware1: "Deep Blue：超級電腦擊敗西洋棋世界冠軍", software1: "XML 1.0：可擴展標記語言的標準化", network1: "Google 的開始：PageRank 與搜尋革命", turing: "1997 年圖靈獎：Douglas Engelbart" },
+      1998: { preface: "1998 年資訊科技年鑑：前言", hardware1: "iMac：Apple 復活的曙光", software1: "Google 公司成立：搜尋引擎的霸權起點", network1: "Nokia 成為最大手機廠：行動通訊的霸權", turing: "1998 年圖靈獎：Jim Gray" },
+      1999: { preface: "1999 年資訊科技年鑑：前言", hardware1: "AMD Athlon 處理器：挑戰 Intel 的霸主地位", software1: "Linux 2.2 核心：開放原始碼的里程碑", network1: "Wi-Fi 無線網路：解放連線的束縛", turing: "1999 年圖靈獎：Fred Brooks" },
+      2000: { preface: "2000 年資訊科技年鑑：前言", hardware1: "PlayStation 2：娛樂電子的巔峰", software1: "Windows 2000：企業級 NT 的巔峰", network1: "達康泡沫：NASDAQ 從 5000 到 1100", turing: "2000 年圖靈獎：姚期智 (Andrew Yao)" },
+      2001: { preface: "2001 年資訊科技年鑑：前言", hardware1: "第一名 iPod：數位音樂隨身行", software1: "Mac OS X 10.0 Cheetah：正式登場", network1: "維基百科創立：人類知識的協作", turing: "2001 年圖靈獎：Ole-Johan Dahl & Kristen Nygaard" },
+      2002: { preface: "2002 年資訊科技年鑑：前言", hardware1: "Apple iMac G4：燈檯設計的革命", software1: "Mozilla 1.0：開放原始碼瀏覽器", network1: "Amazon Web Services 概念的醞釀", turing: "2002 年圖靈獎：Ron Rivest、Adi Shamir、Len Adleman" },
+      2003: { preface: "2003 年資訊科技年鑑：前言", hardware1: "AMD Opteron：64 位元 x86 的開端", software1: "Skype：P2P 網路電話的革命", network1: "LinkedIn：專業社群網路的誕生", turing: "2003 年圖靈獎：Alan Kay" },
+      2004: { preface: "2004 年資訊科技年鑑：前言", hardware1: "Intel Prescott 與散熱危機：NetBurst 的終點", software1: "Mozilla Firefox 1.0：瀏覽器之戰的挑戰者", network1: "Flickr：照片分享的新典範", turing: "2004 年圖靈獎：Vint Cerf & Bob Kahn" },
+      2005: { preface: "2005 年資訊科技年鑑：前言", hardware1: "Apple 轉向 Intel：PowerPC 時代的終結", software1: "Google Maps：地圖與網路的完美結合", network1: "YouTube 創立：影片分享的全球現象", turing: "2005 年圖靈獎：Peter Naur" },
+      2006: { preface: "2006 年資訊科技年鑑：前言", hardware1: "Intel Core 2 Duo：Netburst 時代的終結", software1: "AWS S3 與 EC2：雲端運算的正式啟航", network1: "Twitter 創立：微型部落格的誕生", turing: "2006 年圖靈獎：Frances Allen" },
+      2007: { preface: "2007 年資訊科技年鑑：前言", hardware1: "iPhone 的發表：智慧型手機的革命", software1: "GitHub 創立：社交化程式設計平台", network1: "iPhone 與行動網路：隨時隨地的網際網路", turing: "2007 年圖靈獎：Edmund Clarke、Allen Emerson、Joseph Sifakis" },
+      2008: { preface: "2008 年資訊科技年鑑：前言", hardware1: "App Store 開幕：iPhone 平台生態的誕生", software1: "Google Chrome 瀏覽器與 V8 引擎", network1: "App Store 與行動應用經濟", turing: "2008 年圖靈獎：Barbara Liskov" },
+      2009: { preface: "2009 年資訊科技年鑑：前言", hardware1: "Windows 7：從 Vista 的陰影中走出", software1: "Bitcoin 創世區塊：去中心化貨幣的誕生", network1: "Bitcoin 網路：區塊鏈的起點", turing: "2009 年圖靈獎：Charles Thacker" },
+      2010: { preface: "2010 年資訊科技年鑑：前言", hardware1: "iPad 發表：平板電腦的新典範", software1: "Instagram 創立：手機攝影的社交革命", network1: "iPad 與行動網路的進化", turing: "2010 年圖靈獎：Leslie Valiant" },
+      2011: { preface: "2011 年資訊科技年鑑：前言", hardware1: "Intel Ivy Bridge 22nm：摩爾定律的延續", software1: "Apple iCloud：雲端服務的轉折點", network1: "LINE 與微信：即時通訊的東亞革命", turing: "2011 年圖靈獎：Judea Pearl" },
+      2012: { preface: "2012 年資訊科技年鑑：前言", hardware1: "Raspberry Pi 的出貨：低價電腦的革命", software1: "Facebook IPO：社交網路的資本化", network1: "Facebook 十億用戶時代", turing: "2012 年圖靈獎：Silvio Micali & Shafi Goldwasser" },
+      2013: { preface: "2013 年資訊科技年鑑：前言", hardware1: "Apple iPhone 5s 與 Touch ID 指紋辨識", software1: "Docker 開源：容器化的起點", network1: "Edward Snowden 與 PRISM 監控揭露", turing: "2013 年圖靈獎：Leslie Lamport" },
+      2014: { preface: "2014 年資訊科技年鑑：前言", hardware1: "Apple iPhone 6 與 Apple Pay 行動支付", software1: "Docker 1.0 與容器生態成熟化", network1: "Microsoft Azure 的大規模成長", turing: "2014 年圖靈獎：Michael Stonebraker" },
+      2015: { preface: "2015 年資訊科技年鑑：前言", hardware1: "Intel Skylake 處理器：14 奈米的架構革新", software1: "Windows 10：微軟重回巔峰之作", network1: "TensorFlow 開源：Google 的深度學習引擎", turing: "2015 年圖靈獎：Whitfield Diffie & Martin Hellman" },
+      2016: { preface: "2016 年資訊科技年鑑：前言", hardware1: "Oculus Rift CV1：消費者 VR 元年", software1: "AlphaGo 擊敗李世乭：AI 的歷史時刻", network1: "Microservices 架構的崛起", turing: "2016 年圖靈獎：Tim Berners-Lee" },
+      2017: { preface: "2017 年資訊科技年鑑：前言", hardware1: "iPhone X：Face ID 與全螢幕時代", software1: "PyTorch 開源：研究者的深度學習框架", network1: "Kubernetes 成為 CNCF 主導", turing: "2017 年圖靈獎：John Hennessy & David Patterson" },
+      2018: { preface: "2018 年資訊科技年鑑：前言", hardware1: "Apple A12 Bionic：7nm 行動處理器", software1: "BERT：雙向語言理解的突破", network1: "GDPR 生效：資料保護的新時代", turing: "2018 年圖靈獎：LeCun, Hinton & Bengio" },
+      2019: { preface: "2019 年資訊科技年鑑：前言", hardware1: "AMD Ryzen 3000 系列：7nm 震撼業界", software1: "OpenAI GPT-2：因安全疑慮延後釋出的語言模型", network1: "Cloudflare 1.1.1.1：隱私優先的 DNS 服務", turing: "2019 年圖靈獎：Edwin Catmull & Pat Hanrahan" },
+      2020: { preface: "2020 年資訊科技年鑑：前言", hardware1: "Apple M1 晶片：ARM Mac 的時代序幕", software1: "OpenAI GPT-3：1750 億參數的語言模型", network1: "COVID-19 接觸追蹤 App：數位防疫的技術與隱私", turing: "2020 年圖靈獎：Alfred Aho & Jeffrey Ullman" },
+      2021: { preface: "2021 年資訊科技年鑑：前言", hardware1: "Apple M1 Pro / M1 Max：專業級 ARM 處理器的突破", software1: "Python 超越 Java 成為 TIOBE 第二", network1: "Facebook 改名 Meta：元宇宙元年", turing: "2021 年圖靈獎：Jack Dongarra" },
+      2022: { preface: "2022 年資訊科技年鑑：前言", hardware1: "Apple M2 晶片：第二代 Apple Silicon", software1: "ChatGPT 的誕生：生成式 AI 的革命", network1: "Elon Musk 收購 Twitter：440 億美元的社群媒體風暴", turing: "2022 年圖靈獎：Robert Metcalfe" },
+      2023: { preface: "2023 年資訊科技年鑑：前言", hardware1: "Apple M3 晶片：3 奈米製程的個人電腦處理器", software1: "GPT-4 發布：多模態大型語言模型", network1: "AI 安全峰會：全球監理的開端", turing: "2023 年圖靈獎：Avi Wigderson" },
+      2024: { preface: "2024 年資訊科技年鑑：前言", hardware1: "Nvidia Blackwell B200/GB200：新一代 AI 晶片", software1: "GPT-4o：原生多模態的突破", network1: "歐盟 AI Act 正式通過：全球首部 AI 法規", turing: "2024 年圖靈獎：Andrew Barto 與 Richard Sutton" },
+      2025: { preface: "2025 年資訊科技年鑑：前言", hardware1: "Nvidia Blackwell Ultra B300 與 Rubin 路線圖", software1: "DeepSeek R1/V3：低成本推理模型的衝擊", network1: "AI Agent 大戰：從 Operator 到 Manus", turing: "2025 年圖靈獎：Charles H. Bennett 與 Gilles Brassard" }
+    };
+
     let currentFilter = 'all';
     let currentDecade = null;
 
@@ -937,6 +1016,7 @@
     function openModal(year) {
       const data = yearData[year];
       if (!data) return;
+      const titles = articleTitles[year];
       document.getElementById('modalTitle').textContent = `${year} 年`;
       document.getElementById('modalBody').innerHTML = `
         <p><strong>主題：</strong>${data.title}</p>
@@ -944,11 +1024,13 @@
         <h3>重要事件</h3>
         <ul>${data.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
         <h3>相關文章</h3>
-        <p>硬體：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/hardware1.md" target="_blank">${year}/hardware1.md</a></p>
-        <p>軟體：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/software1.md" target="_blank">${year}/software1.md</a></p>
-        <p>網路：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/network1.md" target="_blank">${year}/network1.md</a></p>
-        ${data.hasTuring ? `<p>圖靈獎：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/turing.md" target="_blank">${year}/turing.md</a></p>` : ''}
-        <p>前言：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/preface.md" target="_blank">${year}/preface.md</a></p>
+        ${titles ? `
+        <p>前言：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/preface.md" target="_blank">${titles.preface}</a></p>
+        <p>硬體：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/hardware1.md" target="_blank">${titles.hardware1}</a></p>
+        <p>軟體：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/software1.md" target="_blank">${titles.software1}</a></p>
+        <p>網路：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/network1.md" target="_blank">${titles.network1}</a></p>
+        ${titles.turing ? `<p>圖靈獎：<a href="https://github.com/cccmag/aicomputer/blob/master/${year}/turing.md" target="_blank">${titles.turing}</a></p>` : ''}
+        ` : ''}
       `;
       document.getElementById('modalOverlay').classList.add('active');
     }
