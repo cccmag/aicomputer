@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>graphify - 知識圖譜</title>
+<script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"
+        integrity="sha384-Ux6phic9PEHJ38YtrijhkzyJ8yQlH8i/+buBR8s3mAZOJrP1gwyvAcIYl3GWtpX1"
+        crossorigin="anonymous"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f0f1a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; display: flex; height: 100vh; overflow: hidden; }
+  #graph { flex: 1; }
+  #sidebar { width: 280px; background: #1a1a2e; border-left: 1px solid #2a2a4e; display: flex; flex-direction: column; overflow: hidden; }
+  #search-wrap { padding: 12px; border-bottom: 1px solid #2a2a4e; }
+  #search { width: 100%; background: #0f0f1a; border: 1px solid #3a3a5e; color: #e0e0e0; padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none; }
+  #search:focus { border-color: #4E79A7; }
+  #search-results { max-height: 140px; overflow-y: auto; padding: 4px 12px; border-bottom: 1px solid #2a2a4e; display: none; }
+  .search-item { padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .search-item:hover { background: #2a2a4e; }
+  #info-panel { padding: 14px; border-bottom: 1px solid #2a2a4e; min-height: 140px; }
+  #info-panel h3 { font-size: 13px; color: #aaa; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  #info-content { font-size: 13px; color: #ccc; line-height: 1.6; }
+  #info-content .field { margin-bottom: 5px; }
+  #info-content .field b { color: #e0e0e0; }
+  #info-content .empty { color: #555; font-style: italic; }
+  .neighbor-link { display: block; padding: 2px 6px; margin: 2px 0; border-radius: 3px; cursor: pointer; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid #333; }
+  .neighbor-link:hover { background: #2a2a4e; }
+  #neighbors-list { max-height: 160px; overflow-y: auto; margin-top: 4px; }
+  #legend-wrap { flex: 1; overflow-y: auto; padding: 12px; }
+  #legend-wrap h3 { font-size: 13px; color: #aaa; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .legend-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; cursor: pointer; border-radius: 4px; font-size: 12px; }
+  .legend-item:hover { background: #2a2a4e; padding-left: 4px; }
+  .legend-item.dimmed { opacity: 0.35; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .legend-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .legend-count { color: #666; font-size: 11px; }
+  #stats { padding: 10px 14px; border-top: 1px solid #2a2a4e; font-size: 11px; color: #555; }
+  #legend-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 4px 0; }
+  #legend-controls label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; color: #aaa; user-select: none; }
+  #legend-controls label:hover { color: #e0e0e0; }
+  .legend-cb, #select-all-cb { appearance: none; -webkit-appearance: none; width: 14px; height: 14px; border: 1.5px solid #3a3a5e; border-radius: 3px; background: #0f0f1a; cursor: pointer; position: relative; flex-shrink: 0; }
+  .legend-cb:checked, #select-all-cb:checked { background: #4E79A7; border-color: #4E79A7; }
+  .legend-cb:checked::after, #select-all-cb:checked::after { content: ''; position: absolute; left: 3.5px; top: 1px; width: 4px; height: 7px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  #select-all-cb:indeterminate { background: #4E79A7; border-color: #4E79A7; }
+  #select-all-cb:indeterminate::after { content: ''; position: absolute; left: 2px; top: 5px; width: 8px; height: 2px; background: #fff; border: none; transform: none; }
+</style>
+</head>
+<body>
+<div id="graph"></div>
+<div id="sidebar">
+  <div id="search-wrap">
+    <input id="search" type="text" placeholder="搜尋節點..." autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+  <div id="info-panel">
+    <h3>節點資訊</h3>
+    <div id="info-content"><span class="empty">點選節點查看詳情</span></div>
+  </div>
+  <div id="legend-wrap">
+    <h3>社群</h3>
+    <div id="legend-controls">
+      <label><input type="checkbox" id="select-all-cb" checked onchange="toggleAllCommunities(!this.checked)">全選</label>
+    </div>
+    <div id="legend"></div>
+  </div>
+  <div id="stats">96 節點 &middot; 45 邊 &middot; 51 社群</div>
+</div>
+<script>
+const RAW_NODES = [{"id":"opencode_opencode","label":"opencode.json","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"opencode.json","community":10,"community_name":"Community 10","source_file":".opencode/opencode.json","file_type":"程式碼","degree":2},{"id":"opencode_opencode_schema","label":"$schema","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"$schema","community":10,"community_name":"Community 10","source_file":".opencode/opencode.json","file_type":"程式碼","degree":1},{"id":"opencode_opencode_plugin","label":"plugin","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"plugin","community":10,"community_name":"Community 10","source_file":".opencode/opencode.json","file_type":"程式碼","degree":1},{"id":"opencode_package","label":"package.json","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"package.json","community":11,"community_name":"Community 11","source_file":".opencode/package.json","file_type":"程式碼","degree":1},{"id":"opencode_package_dependencies","label":"dependencies","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"dependencies","community":11,"community_name":"Community 11","source_file":".opencode/package.json","file_type":"程式碼","degree":2},{"id":"opencode_package_dependencies_opencode_ai_plugin","label":"@opencode-ai/plugin","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"@opencode-ai/plugin","community":11,"community_name":"Community 11","source_file":".opencode/package.json","file_type":"程式碼","degree":1},{"id":"plugins_graphify","label":"graphify.js","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"graphify.js","community":20,"community_name":"Community 20","source_file":".opencode/plugins/graphify.js","file_type":"程式碼","degree":1},{"id":"plugins_graphify_graphifyplugin","label":"GraphifyPlugin()","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"GraphifyPlugin()","community":20,"community_name":"Community 20","source_file":".opencode/plugins/graphify.js","file_type":"程式碼","degree":1},{"id":"turing_test","label":"圖靈測試","color":{"background":"#76B7B2","border":"#76B7B2","highlight":{"background":"#ffffff","border":"#76B7B2"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"圖靈測試","community":13,"community_name":"AI 基礎","source_file":"1950/history.md","file_type":"文件","degree":1},{"id":"stored_program","label":"儲存程式架構","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":40.0,"font":{"size":12,"color":"#ffffff"},"title":"儲存程式架構","community":0,"community_name":"早期計算基礎","source_file":"1950/history.md","file_type":"文件","degree":4},{"id":"von_neumann","label":"馮紐曼架構","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"馮紐曼架構","community":0,"community_name":"早期計算基礎","source_file":"1950/history.md","file_type":"文件","degree":1},{"id":"seac","label":"SEAC","color":{"background":"#BAB0AC","border":"#BAB0AC","highlight":{"background":"#ffffff","border":"#BAB0AC"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"SEAC","community":39,"community_name":"Community 39","source_file":"1950/history.md","file_type":"文件","degree":0},{"id":"swac","label":"SWAC","color":{"background":"#E15759","border":"#E15759","highlight":{"background":"#ffffff","border":"#E15759"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"SWAC","community":42,"community_name":"Community 42","source_file":"1950/history.md","file_type":"文件","degree":0},{"id":"eniac","label":"ENIAC","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"ENIAC","community":0,"community_name":"早期計算基礎","source_file":"1950/history.md","file_type":"文件","degree":1},{"id":"edvac","label":"EDVAC","color":{"background":"#9C755F","border":"#9C755F","highlight":{"background":"#ffffff","border":"#9C755F"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"EDVAC","community":28,"community_name":"Community 28","source_file":"1950/history.md","file_type":"文件","degree":0},{"id":"artificial_intelligence","label":"人工智慧","color":{"background":"#76B7B2","border":"#76B7B2","highlight":{"background":"#ffffff","border":"#76B7B2"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"人工智慧","community":13,"community_name":"AI 基礎","source_file":"1950/history.md","file_type":"文件","degree":1},{"id":"turing_machine","label":"圖靈機","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"圖靈機","community":0,"community_name":"早期計算基礎","source_file":"1950/history.md","file_type":"文件","degree":1},{"id":"univac","label":"UNIVAC","color":{"background":"#59A14F","border":"#59A14F","highlight":{"background":"#ffffff","border":"#59A14F"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"UNIVAC","community":44,"community_name":"Community 44","source_file":"1950/history.md","file_type":"文件","degree":0},{"id":"mercury_delay_line","label":"水銀延遲線記憶體","color":{"background":"#59A14F","border":"#59A14F","highlight":{"background":"#ffffff","border":"#59A14F"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"水銀延遲線記憶體","community":34,"community_name":"Community 34","source_file":"1950/history.md","file_type":"文件","degree":0},{"id":"ias_machine","label":"IAS 機器","color":{"background":"#E15759","border":"#E15759","highlight":{"background":"#ffffff","border":"#E15759"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"IAS 機器","community":32,"community_name":"Community 32","source_file":"1950/history.md","file_type":"文件","degree":0},{"id":"pdp8","label":"PDP-8","color":{"background":"#76B7B2","border":"#76B7B2","highlight":{"background":"#ffffff","border":"#76B7B2"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"PDP-8","community":3,"community_name":"個人電腦演進","source_file":"1965/history.md","file_type":"文件","degree":1},{"id":"moores_law","label":"摩爾定律","color":{"background":"#BAB0AC","border":"#BAB0AC","highlight":{"background":"#ffffff","border":"#BAB0AC"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"摩爾定律","community":9,"community_name":"晶片微縮定律","source_file":"1965/history.md","file_type":"文件","degree":2},{"id":"multics","label":"Multics","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":32.5,"font":{"size":12,"color":"#ffffff"},"title":"Multics","community":0,"community_name":"早期計算基礎","source_file":"1965/history.md","file_type":"文件","degree":3},{"id":"unix","label":"Unix","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"Unix","community":0,"community_name":"早期計算基礎","source_file":"1965/history.md","file_type":"文件","degree":2},{"id":"basic","label":"BASIC","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"BASIC","community":0,"community_name":"早期計算基礎","source_file":"1965/history.md","file_type":"文件","degree":1},{"id":"time_sharing","label":"分時運算","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"分時運算","community":0,"community_name":"早期計算基礎","source_file":"1965/history.md","file_type":"文件","degree":1},{"id":"project_mac","label":"Project MAC","color":{"background":"#FF9DA7","border":"#FF9DA7","highlight":{"background":"#ffffff","border":"#FF9DA7"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Project MAC","community":37,"community_name":"Community 37","source_file":"1965/history.md","file_type":"文件","degree":0},{"id":"cdc6600","label":"CDC 6600","color":{"background":"#EDC948","border":"#EDC948","highlight":{"background":"#ffffff","border":"#EDC948"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"CDC 6600","community":15,"community_name":"超級運算","source_file":"1965/history.md","file_type":"文件","degree":1},{"id":"cray1","label":"Cray-1","color":{"background":"#EDC948","border":"#EDC948","highlight":{"background":"#ffffff","border":"#EDC948"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Cray-1","community":15,"community_name":"超級運算","source_file":"1965/history.md","file_type":"文件","degree":1},{"id":"data_general","label":"Data General","color":{"background":"#B07AA1","border":"#B07AA1","highlight":{"background":"#ffffff","border":"#B07AA1"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Data General","community":26,"community_name":"Community 26","source_file":"1965/history.md","file_type":"文件","degree":0},{"id":"integrated_circuit","label":"積體電路","color":{"background":"#BAB0AC","border":"#BAB0AC","highlight":{"background":"#ffffff","border":"#BAB0AC"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"積體電路","community":9,"community_name":"晶片微縮定律","source_file":"1965/history.md","file_type":"文件","degree":1},{"id":"msdos","label":"MS-DOS","color":{"background":"#59A14F","border":"#59A14F","highlight":{"background":"#ffffff","border":"#59A14F"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"MS-DOS","community":4,"community_name":"Microsoft PC 生態","source_file":"1980/history.md","file_type":"文件","degree":2},{"id":"windows","label":"Microsoft Windows","color":{"background":"#59A14F","border":"#59A14F","highlight":{"background":"#ffffff","border":"#59A14F"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"Microsoft Windows","community":4,"community_name":"Microsoft PC 生態","source_file":"1980/history.md","file_type":"文件","degree":2},{"id":"ethernet","label":"乙太網路","color":{"background":"#BAB0AC","border":"#BAB0AC","highlight":{"background":"#ffffff","border":"#BAB0AC"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"乙太網路","community":29,"community_name":"Community 29","source_file":"1980/history.md","file_type":"文件","degree":0},{"id":"dix_ethernet","label":"DIX 乙太網路","color":{"background":"#FF9DA7","border":"#FF9DA7","highlight":{"background":"#ffffff","border":"#FF9DA7"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"DIX 乙太網路","community":27,"community_name":"Community 27","source_file":"1980/history.md","file_type":"文件","degree":0},{"id":"smalltalk","label":"Smalltalk","color":{"background":"#9C755F","border":"#9C755F","highlight":{"background":"#ffffff","border":"#9C755F"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Smalltalk","community":8,"community_name":"物件導向程式設計","source_file":"1980/history.md","file_type":"文件","degree":1},{"id":"object_oriented","label":"物件導向程式設計","color":{"background":"#9C755F","border":"#9C755F","highlight":{"background":"#ffffff","border":"#9C755F"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"物件導向程式設計","community":8,"community_name":"物件導向程式設計","source_file":"1980/history.md","file_type":"文件","degree":2},{"id":"sinclair_zx80","label":"Sinclair ZX80","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Sinclair ZX80","community":40,"community_name":"Community 40","source_file":"1980/history.md","file_type":"文件","degree":0},{"id":"ibm_pc","label":"IBM PC","color":{"background":"#59A14F","border":"#59A14F","highlight":{"background":"#ffffff","border":"#59A14F"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"IBM PC","community":4,"community_name":"Microsoft PC 生態","source_file":"1980/history.md","file_type":"文件","degree":1},{"id":"apple_ii","label":"Apple II","color":{"background":"#76B7B2","border":"#76B7B2","highlight":{"background":"#ffffff","border":"#76B7B2"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"Apple II","community":3,"community_name":"個人電腦演進","source_file":"1980/history.md","file_type":"文件","degree":2},{"id":"commodore_64","label":"Commodore 64","color":{"background":"#EDC948","border":"#EDC948","highlight":{"background":"#ffffff","border":"#EDC948"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Commodore 64","community":25,"community_name":"Community 25","source_file":"1980/history.md","file_type":"文件","degree":0},{"id":"cplusplus","label":"C++","color":{"background":"#9C755F","border":"#9C755F","highlight":{"background":"#ffffff","border":"#9C755F"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"C++","community":8,"community_name":"物件導向程式設計","source_file":"1980/history.md","file_type":"文件","degree":1},{"id":"worldwideweb","label":"全球資訊網","color":{"background":"#FF9DA7","border":"#FF9DA7","highlight":{"background":"#ffffff","border":"#FF9DA7"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"全球資訊網","community":7,"community_name":"全球資訊網起源","source_file":"1990/history.md","file_type":"文件","degree":2},{"id":"berners_lee","label":"Tim Berners-Lee","color":{"background":"#FF9DA7","border":"#FF9DA7","highlight":{"background":"#ffffff","border":"#FF9DA7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Tim Berners-Lee","community":7,"community_name":"全球資訊網起源","source_file":"1990/history.md","file_type":"文件","degree":1},{"id":"netscape","label":"Netscape Navigator","color":{"background":"#FF9DA7","border":"#FF9DA7","highlight":{"background":"#ffffff","border":"#FF9DA7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Netscape Navigator","community":7,"community_name":"全球資訊網起源","source_file":"1990/history.md","file_type":"文件","degree":1},{"id":"windows3","label":"Windows 3.0","color":{"background":"#59A14F","border":"#59A14F","highlight":{"background":"#ffffff","border":"#59A14F"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Windows 3.0","community":4,"community_name":"Microsoft PC 生態","source_file":"1990/history.md","file_type":"文件","degree":1},{"id":"photoshop","label":"Photoshop","color":{"background":"#EDC948","border":"#EDC948","highlight":{"background":"#ffffff","border":"#EDC948"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Photoshop","community":35,"community_name":"Community 35","source_file":"1990/history.md","file_type":"文件","degree":0},{"id":"arpanet","label":"ARPANET","color":{"background":"#76B7B2","border":"#76B7B2","highlight":{"background":"#ffffff","border":"#76B7B2"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"ARPANET","community":23,"community_name":"Community 23","source_file":"1990/history.md","file_type":"文件","degree":0},{"id":"isp","label":"網際網路服務提供者","color":{"background":"#76B7B2","border":"#76B7B2","highlight":{"background":"#ffffff","border":"#76B7B2"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"網際網路服務提供者","community":33,"community_name":"Community 33","source_file":"1990/history.md","file_type":"文件","degree":0},{"id":"intel_386","label":"Intel 386","color":{"background":"#BAB0AC","border":"#BAB0AC","highlight":{"background":"#ffffff","border":"#BAB0AC"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Intel 386","community":9,"community_name":"晶片微縮定律","source_file":"1990/history.md","file_type":"文件","degree":1},{"id":"search_engine","label":"搜尋引擎","color":{"background":"#EDC948","border":"#EDC948","highlight":{"background":"#ffffff","border":"#EDC948"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"搜尋引擎","community":5,"community_name":"搜尋技術","source_file":"1990/history.md","file_type":"文件","degree":2},{"id":"archie","label":"Archie","color":{"background":"#EDC948","border":"#EDC948","highlight":{"background":"#ffffff","border":"#EDC948"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Archie","community":5,"community_name":"搜尋技術","source_file":"1990/history.md","file_type":"文件","degree":1},{"id":"yahoo","label":"Yahoo","color":{"background":"#BAB0AC","border":"#BAB0AC","highlight":{"background":"#ffffff","border":"#BAB0AC"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Yahoo","community":49,"community_name":"Community 49","source_file":"1990/history.md","file_type":"文件","degree":0},{"id":"google","label":"Google","color":{"background":"#EDC948","border":"#EDC948","highlight":{"background":"#ffffff","border":"#EDC948"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Google","community":5,"community_name":"搜尋技術","source_file":"1990/history.md","file_type":"文件","degree":1},{"id":"playstation2","label":"PlayStation 2","color":{"background":"#B07AA1","border":"#B07AA1","highlight":{"background":"#ffffff","border":"#B07AA1"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"PlayStation 2","community":36,"community_name":"Community 36","source_file":"2000/history.md","file_type":"文件","degree":0},{"id":"usb_flash","label":"USB 隨身碟","color":{"background":"#EDC948","border":"#EDC948","highlight":{"background":"#ffffff","border":"#EDC948"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"USB 隨身碟","community":45,"community_name":"Community 45","source_file":"2000/history.md","file_type":"文件","degree":0},{"id":"bluetooth","label":"藍牙","color":{"background":"#59A14F","border":"#59A14F","highlight":{"background":"#ffffff","border":"#59A14F"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"藍牙","community":14,"community_name":"無線與物聯網","source_file":"2000/history.md","file_type":"文件","degree":1},{"id":"iot","label":"物聯網","color":{"background":"#59A14F","border":"#59A14F","highlight":{"background":"#ffffff","border":"#59A14F"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"物聯網","community":14,"community_name":"無線與物聯網","source_file":"2000/history.md","file_type":"文件","degree":1},{"id":"macosx","label":"Mac OS X","color":{"background":"#E15759","border":"#E15759","highlight":{"background":"#ffffff","border":"#E15759"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Mac OS X","community":2,"community_name":"Apple 生態系統","source_file":"2000/history.md","file_type":"文件","degree":1},{"id":"ios","label":"iOS","color":{"background":"#E15759","border":"#E15759","highlight":{"background":"#ffffff","border":"#E15759"}},"size":32.5,"font":{"size":12,"color":"#ffffff"},"title":"iOS","community":2,"community_name":"Apple 生態系統","source_file":"2000/history.md","file_type":"文件","degree":3},{"id":"dotcom_bubble","label":"達康泡沫","color":{"background":"#FF9DA7","border":"#FF9DA7","highlight":{"background":"#ffffff","border":"#FF9DA7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"達康泡沫","community":17,"community_name":"Web 2.0 時代","source_file":"2000/history.md","file_type":"文件","degree":1},{"id":"web2","label":"Web 2.0","color":{"background":"#FF9DA7","border":"#FF9DA7","highlight":{"background":"#ffffff","border":"#FF9DA7"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Web 2.0","community":17,"community_name":"Web 2.0 時代","source_file":"2000/history.md","file_type":"文件","degree":1},{"id":"broadband","label":"寬頻網路","color":{"background":"#59A14F","border":"#59A14F","highlight":{"background":"#ffffff","border":"#59A14F"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"寬頻網路","community":24,"community_name":"Community 24","source_file":"2000/history.md","file_type":"文件","degree":0},{"id":"wifi","label":"Wi-Fi","color":{"background":"#9C755F","border":"#9C755F","highlight":{"background":"#ffffff","border":"#9C755F"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Wi-Fi","community":48,"community_name":"Community 48","source_file":"2000/history.md","file_type":"文件","degree":0},{"id":"skype","label":"Skype","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Skype","community":41,"community_name":"Community 41","source_file":"2000/history.md","file_type":"文件","degree":0},{"id":"ipad","label":"iPad","color":{"background":"#E15759","border":"#E15759","highlight":{"background":"#ffffff","border":"#E15759"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"iPad","community":2,"community_name":"Apple 生態系統","source_file":"2010/history.md","file_type":"文件","degree":2},{"id":"post_pc","label":"後 PC 時代","color":{"background":"#E15759","border":"#E15759","highlight":{"background":"#ffffff","border":"#E15759"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"後 PC 時代","community":2,"community_name":"Apple 生態系統","source_file":"2010/history.md","file_type":"文件","degree":1},{"id":"instagram","label":"Instagram","color":{"background":"#9C755F","border":"#9C755F","highlight":{"background":"#ffffff","border":"#9C755F"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Instagram","community":18,"community_name":"社群媒體","source_file":"2010/history.md","file_type":"文件","degree":1},{"id":"angularjs","label":"AngularJS","color":{"background":"#E15759","border":"#E15759","highlight":{"background":"#ffffff","border":"#E15759"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"AngularJS","community":12,"community_name":"前端框架","source_file":"2010/history.md","file_type":"文件","degree":1},{"id":"swift_language","label":"Swift 程式語言","color":{"background":"#E15759","border":"#E15759","highlight":{"background":"#ffffff","border":"#E15759"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Swift 程式語言","community":2,"community_name":"Apple 生態系統","source_file":"2010/history.md","file_type":"文件","degree":1},{"id":"azure","label":"Microsoft Azure","color":{"background":"#B07AA1","border":"#B07AA1","highlight":{"background":"#ffffff","border":"#B07AA1"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Microsoft Azure","community":6,"community_name":"雲端基礎設施","source_file":"2010/history.md","file_type":"文件","degree":1},{"id":"aws","label":"Amazon Web Services","color":{"background":"#B07AA1","border":"#B07AA1","highlight":{"background":"#ffffff","border":"#B07AA1"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Amazon Web Services","community":6,"community_name":"雲端基礎設施","source_file":"2010/history.md","file_type":"文件","degree":1},{"id":"cloud_computing","label":"雲端運算","color":{"background":"#B07AA1","border":"#B07AA1","highlight":{"background":"#ffffff","border":"#B07AA1"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"雲端運算","community":6,"community_name":"雲端基礎設施","source_file":"2010/history.md","file_type":"文件","degree":2},{"id":"facebook","label":"Facebook","color":{"background":"#9C755F","border":"#9C755F","highlight":{"background":"#ffffff","border":"#9C755F"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Facebook","community":18,"community_name":"社群媒體","source_file":"2010/history.md","file_type":"文件","degree":1},{"id":"angular","label":"Angular","color":{"background":"#E15759","border":"#E15759","highlight":{"background":"#ffffff","border":"#E15759"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Angular","community":12,"community_name":"前端框架","source_file":"2010/history.md","file_type":"文件","degree":1},{"id":"react","label":"React","color":{"background":"#9C755F","border":"#9C755F","highlight":{"background":"#ffffff","border":"#9C755F"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"React","community":38,"community_name":"Community 38","source_file":"2010/history.md","file_type":"文件","degree":0},{"id":"vuejs","label":"Vue.js","color":{"background":"#FF9DA7","border":"#FF9DA7","highlight":{"background":"#ffffff","border":"#FF9DA7"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Vue.js","community":47,"community_name":"Community 47","source_file":"2010/history.md","file_type":"文件","degree":0},{"id":"apple_m1","label":"Apple M1","color":{"background":"#76B7B2","border":"#76B7B2","highlight":{"background":"#ffffff","border":"#76B7B2"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Apple M1","community":3,"community_name":"個人電腦演進","source_file":"2020/history.md","file_type":"文件","degree":1},{"id":"arm_pc","label":"ARM 架構","color":{"background":"#76B7B2","border":"#76B7B2","highlight":{"background":"#ffffff","border":"#76B7B2"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"ARM 架構","community":3,"community_name":"個人電腦演進","source_file":"2020/history.md","file_type":"文件","degree":2},{"id":"gpt3","label":"GPT-3","color":{"background":"#BAB0AC","border":"#BAB0AC","highlight":{"background":"#ffffff","border":"#BAB0AC"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"GPT-3","community":19,"community_name":"大型語言模型","source_file":"2020/history.md","file_type":"文件","degree":1},{"id":"large_language_model","label":"大型語言模型","color":{"background":"#BAB0AC","border":"#BAB0AC","highlight":{"background":"#ffffff","border":"#BAB0AC"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"大型語言模型","community":19,"community_name":"大型語言模型","source_file":"2020/history.md","file_type":"文件","degree":1},{"id":"covid19","label":"COVID-19 疫情","color":{"background":"#B07AA1","border":"#B07AA1","highlight":{"background":"#ffffff","border":"#B07AA1"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"COVID-19 疫情","community":16,"community_name":"疫情遠距工作","source_file":"2020/history.md","file_type":"文件","degree":1},{"id":"zoom","label":"Zoom","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Zoom","community":50,"community_name":"Community 50","source_file":"2020/history.md","file_type":"文件","degree":0},{"id":"remote_work","label":"遠距工作","color":{"background":"#B07AA1","border":"#B07AA1","highlight":{"background":"#ffffff","border":"#B07AA1"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"遠距工作","community":16,"community_name":"疫情遠距工作","source_file":"2020/history.md","file_type":"文件","degree":1},{"id":"quantum_supremacy","label":"量子霸權","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"量子霸權","community":21,"community_name":"量子運算","source_file":"2020/history.md","file_type":"文件","degree":1},{"id":"google_sycamore","label":"Google Sycamore","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Google Sycamore","community":31,"community_name":"Community 31","source_file":"2020/history.md","file_type":"文件","degree":0},{"id":"tpu","label":"張量處理單元","color":{"background":"#76B7B2","border":"#76B7B2","highlight":{"background":"#ffffff","border":"#76B7B2"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"張量處理單元","community":43,"community_name":"Community 43","source_file":"2020/history.md","file_type":"文件","degree":0},{"id":"deepseek_r1","label":"DeepSeek R1","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"DeepSeek R1","community":1,"community_name":"AI 代理革命","source_file":"2025/history.md","file_type":"文件","degree":1},{"id":"ai_agent","label":"AI 代理","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":32.5,"font":{"size":12,"color":"#ffffff"},"title":"AI 代理","community":1,"community_name":"AI 代理革命","source_file":"2025/history.md","file_type":"文件","degree":3},{"id":"claude_code","label":"Claude Code","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":25.0,"font":{"size":12,"color":"#ffffff"},"title":"Claude Code","community":1,"community_name":"AI 代理革命","source_file":"2025/history.md","file_type":"文件","degree":2},{"id":"mcp_protocol","label":"MCP 協定","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"MCP 協定","community":1,"community_name":"AI 代理革命","source_file":"2025/history.md","file_type":"文件","degree":1},{"id":"nvidia_blackwell","label":"Nvidia Blackwell","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"Nvidia Blackwell","community":1,"community_name":"AI 代理革命","source_file":"2025/history.md","file_type":"文件","degree":1},{"id":"quantum_computing","label":"量子運算","color":{"background":"#F28E2B","border":"#F28E2B","highlight":{"background":"#ffffff","border":"#F28E2B"}},"size":17.5,"font":{"size":12,"color":"#ffffff"},"title":"量子運算","community":21,"community_name":"量子運算","source_file":"2025/history.md","file_type":"文件","degree":1},{"id":"eu_ai_act","label":"歐盟 AI 法案","color":{"background":"#4E79A7","border":"#4E79A7","highlight":{"background":"#ffffff","border":"#4E79A7"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"歐盟 AI 法案","community":30,"community_name":"Community 30","source_file":"2025/history.md","file_type":"文件","degree":0},{"id":"vibe_coding","label":"Vibe Coding","color":{"background":"#B07AA1","border":"#B07AA1","highlight":{"background":"#ffffff","border":"#B07AA1"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Vibe Coding","community":46,"community_name":"Community 46","source_file":"2025/history.md","file_type":"文件","degree":0},{"id":"apple_m5","label":"Apple M5","color":{"background":"#E15759","border":"#E15759","highlight":{"background":"#ffffff","border":"#E15759"}},"size":10.0,"font":{"size":0,"color":"#ffffff"},"title":"Apple M5","community":22,"community_name":"Community 22","source_file":"2025/history.md","file_type":"文件","degree":0}];
+const RAW_EDGES = [{"from":"opencode_opencode","to":"opencode_opencode_plugin","label":"包含","title":"包含 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"opencode_opencode","to":"opencode_opencode_schema","label":"包含","title":"包含 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"opencode_package","to":"opencode_package_dependencies","label":"包含","title":"包含 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"opencode_package_dependencies","to":"opencode_package_dependencies_opencode_ai_plugin","label":"包含","title":"包含 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"plugins_graphify","to":"plugins_graphify_graphifyplugin","label":"包含","title":"包含 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"turing_test","to":"artificial_intelligence","label":"先決條件","title":"先決條件 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"stored_program","to":"eniac","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"stored_program","to":"multics","label":"演化為","title":"演化為 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"turing_machine","to":"stored_program","label":"理論基礎","title":"理論基礎 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"von_neumann","to":"stored_program","label":"由...實現","title":"由...實現 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"pdp8","to":"apple_ii","label":"演化為","title":"演化為 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"intel_386","to":"moores_law","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"moores_law","to":"integrated_circuit","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"multics","to":"unix","label":"先決條件","title":"先決條件 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"time_sharing","to":"multics","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"basic","to":"unix","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"cdc6600","to":"cray1","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"ibm_pc","to":"msdos","label":"由...實現","title":"由...實現 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"msdos","to":"windows","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"windows3","to":"windows","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"smalltalk","to":"object_oriented","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"object_oriented","to":"cplusplus","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"arm_pc","to":"apple_ii","label":"演化為","title":"演化為 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"berners_lee","to":"worldwideweb","label":"由...建立","title":"由...建立 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"worldwideweb","to":"netscape","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"archie","to":"search_engine","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"search_engine","to":"google","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"bluetooth","to":"iot","label":"先決條件","title":"先決條件 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"macosx","to":"ios","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"ios","to":"ipad","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"swift_language","to":"ios","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"dotcom_bubble","to":"web2","label":"先決條件","title":"先決條件 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"ipad","to":"post_pc","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"instagram","to":"facebook","label":"被收購","title":"被收購 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"angularjs","to":"angular","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"cloud_computing","to":"azure","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"cloud_computing","to":"aws","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"apple_m1","to":"arm_pc","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"gpt3","to":"large_language_model","label":"演化為","title":"演化為 [提取]","dashes":false,"width":2,"color":{"opacity":0.7},"confidence":"EXTRACTED"},{"from":"covid19","to":"remote_work","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"quantum_computing","to":"quantum_supremacy","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"deepseek_r1","to":"ai_agent","label":"演化為","title":"演化為 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"ai_agent","to":"claude_code","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"nvidia_blackwell","to":"ai_agent","label":"由...實現","title":"由...實現 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"},{"from":"claude_code","to":"mcp_protocol","label":"概念相關","title":"概念相關 [推論]","dashes":true,"width":1,"color":{"opacity":0.35},"confidence":"INFERRED"}];
+const LEGEND = [{"cid": 0, "color": "#4E79A7", "label": "早期計算基礎", "count": 8}, {"cid": 1, "color": "#F28E2B", "label": "AI 代理革命", "count": 5}, {"cid": 2, "color": "#E15759", "label": "Apple 生態系統", "count": 5}, {"cid": 3, "color": "#76B7B2", "label": "個人電腦演進", "count": 4}, {"cid": 4, "color": "#59A14F", "label": "Microsoft PC 生態", "count": 4}, {"cid": 5, "color": "#EDC948", "label": "搜尋技術", "count": 3}, {"cid": 6, "color": "#B07AA1", "label": "雲端基礎設施", "count": 3}, {"cid": 7, "color": "#FF9DA7", "label": "全球資訊網起源", "count": 3}, {"cid": 8, "color": "#9C755F", "label": "物件導向程式設計", "count": 3}, {"cid": 9, "color": "#BAB0AC", "label": "晶片微縮定律", "count": 3}, {"cid": 12, "color": "#E15759", "label": "前端框架", "count": 2}, {"cid": 13, "color": "#76B7B2", "label": "AI 基礎", "count": 2}, {"cid": 14, "color": "#59A14F", "label": "無線與物聯網", "count": 2}, {"cid": 15, "color": "#EDC948", "label": "超級運算", "count": 2}, {"cid": 16, "color": "#B07AA1", "label": "疫情遠距工作", "count": 2}, {"cid": 17, "color": "#FF9DA7", "label": "Web 2.0 時代", "count": 2}, {"cid": 18, "color": "#9C755F", "label": "社群媒體", "count": 2}, {"cid": 19, "color": "#BAB0AC", "label": "大型語言模型", "count": 2}, {"cid": 21, "color": "#F28E2B", "label": "量子運算", "count": 2}];
+
+// HTML-escape helper — prevents XSS when injecting graph data into innerHTML
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// Build vis datasets
+const nodesDS = new vis.DataSet(RAW_NODES.map(n => ({
+  id: n.id, label: n.label, color: n.color, size: n.size,
+  font: n.font, title: n.title,
+  _community: n.community, _community_name: n.community_name,
+  _source_file: n.source_file, _file_type: n.file_type, _degree: n.degree,
+})));
+
+const edgesDS = new vis.DataSet(RAW_EDGES.map((e, i) => ({
+  id: i, from: e.from, to: e.to,
+  label: '',
+  title: e.title,
+  dashes: e.dashes,
+  width: e.width,
+  color: e.color,
+  arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+})));
+
+const container = document.getElementById('graph');
+const network = new vis.Network(container, { nodes: nodesDS, edges: edgesDS }, {
+  physics: {
+    enabled: true,
+    solver: 'forceAtlas2Based',
+    forceAtlas2Based: {
+      gravitationalConstant: -60,
+      centralGravity: 0.005,
+      springLength: 120,
+      springConstant: 0.08,
+      damping: 0.4,
+      avoidOverlap: 0.8,
+    },
+    stabilization: { iterations: 200, fit: true },
+  },
+  interaction: {
+    hover: true,
+    tooltipDelay: 100,
+    hideEdgesOnDrag: true,
+    navigationButtons: false,
+    keyboard: false,
+  },
+  nodes: { shape: 'dot', borderWidth: 1.5 },
+  edges: { smooth: { type: 'continuous', roundness: 0.2 }, selectionWidth: 3 },
+});
+
+network.once('stabilizationIterationsDone', () => {
+  network.setOptions({ physics: { enabled: false } });
+});
+
+function showInfo(nodeId) {
+  const n = nodesDS.get(nodeId);
+  if (!n) return;
+  const neighborIds = network.getConnectedNodes(nodeId);
+  const neighborItems = neighborIds.map(nid => {
+    const nb = nodesDS.get(nid);
+    const color = nb ? nb.color.background : '#555';
+    return `<span class="neighbor-link" style="border-left-color:${esc(color)}" onclick="focusNode(${JSON.stringify(nid)})">${esc(nb ? nb.label : nid)}</span>`;
+  }).join('');
+  document.getElementById('info-content').innerHTML = `
+    <div class="field"><b>${esc(n.label)}</b></div>
+    <div class="field">類型: ${esc(n._file_type || '未知')}</div>
+    <div class="field">社群: ${esc(n._community_name)}</div>
+    <div class="field">來源: ${esc(n._source_file || '-')}</div>
+    <div class="field">度數: ${n._degree}</div>
+    ${neighborIds.length ? `<div class="field" style="margin-top:8px;color:#aaa;font-size:11px">鄰居 (${neighborIds.length})</div><div id="neighbors-list">${neighborItems}</div>` : ''}
+  `;
+}
+
+function focusNode(nodeId) {
+  network.focus(nodeId, { scale: 1.4, animation: true });
+  network.selectNodes([nodeId]);
+  showInfo(nodeId);
+}
+
+// Track hovered node — hover detection is more reliable than click params
+let hoveredNodeId = null;
+network.on('hoverNode', params => {
+  hoveredNodeId = params.node;
+  container.style.cursor = 'pointer';
+});
+network.on('blurNode', () => {
+  hoveredNodeId = null;
+  container.style.cursor = 'default';
+});
+container.addEventListener('click', () => {
+  if (hoveredNodeId !== null) {
+    showInfo(hoveredNodeId);
+    network.selectNodes([hoveredNodeId]);
+  }
+});
+network.on('click', params => {
+  if (params.nodes.length > 0) {
+    showInfo(params.nodes[0]);
+  } else if (hoveredNodeId === null) {
+    document.getElementById('info-content').innerHTML = '<span class="empty">點選節點查看詳情</span>';
+  }
+});
+
+const searchInput = document.getElementById('search');
+const searchResults = document.getElementById('search-results');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  searchResults.innerHTML = '';
+  if (!q) { searchResults.style.display = 'none'; return; }
+  const matches = RAW_NODES.filter(n => n.label.toLowerCase().includes(q)).slice(0, 20);
+  if (!matches.length) { searchResults.style.display = 'none'; return; }
+  searchResults.style.display = 'block';
+  matches.forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'search-item';
+    el.textContent = n.label;
+    el.style.borderLeft = `3px solid ${n.color.background}`;
+    el.style.paddingLeft = '8px';
+    el.onclick = () => {
+      network.focus(n.id, { scale: 1.5, animation: true });
+      network.selectNodes([n.id]);
+      showInfo(n.id);
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+    };
+    searchResults.appendChild(el);
+  });
+});
+document.addEventListener('click', e => {
+  if (!searchResults.contains(e.target) && e.target !== searchInput)
+    searchResults.style.display = 'none';
+});
+
+const hiddenCommunities = new Set();
+
+const selectAllCb = document.getElementById('select-all-cb');
+
+function updateSelectAllState() {
+  const total = LEGEND.length;
+  const hidden = hiddenCommunities.size;
+  selectAllCb.checked = hidden === 0;
+  selectAllCb.indeterminate = hidden > 0 && hidden < total;
+}
+
+function toggleAllCommunities(hide) {
+  document.querySelectorAll('.legend-item').forEach(item => {
+    hide ? item.classList.add('dimmed') : item.classList.remove('dimmed');
+  });
+  document.querySelectorAll('.legend-cb').forEach(cb => {
+    cb.checked = !hide;
+  });
+  LEGEND.forEach(c => {
+    if (hide) hiddenCommunities.add(c.cid); else hiddenCommunities.delete(c.cid);
+  });
+  const updates = RAW_NODES.map(n => ({ id: n.id, hidden: hide }));
+  nodesDS.update(updates);
+  updateSelectAllState();
+}
+
+const legendEl = document.getElementById('legend');
+LEGEND.forEach(c => {
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.className = 'legend-cb';
+  cb.checked = true;
+  cb.addEventListener('change', (e) => {
+    e.stopPropagation();
+    if (cb.checked) {
+      hiddenCommunities.delete(c.cid);
+      item.classList.remove('dimmed');
+    } else {
+      hiddenCommunities.add(c.cid);
+      item.classList.add('dimmed');
+    }
+    const updates = RAW_NODES
+      .filter(n => n.community === c.cid)
+      .map(n => ({ id: n.id, hidden: !cb.checked }));
+    nodesDS.update(updates);
+    updateSelectAllState();
+  });
+  item.innerHTML = `<div class="legend-dot" style="background:${c.color}"></div>
+    <span class="legend-label">${c.label}</span>
+    <span class="legend-count">${c.count}</span>`;
+  item.prepend(cb);
+  item.onclick = (e) => {
+    if (e.target === cb) return;
+    cb.checked = !cb.checked;
+    cb.dispatchEvent(new Event('change'));
+  };
+  legendEl.appendChild(item);
+});
+</script>
+<script>
+// Render hyperedges as shaded regions
+const hyperedges = [];
+// afterDrawing passes ctx already transformed to network coordinate space.
+// Draw node positions raw — no manual pan/zoom/DPR math needed.
+network.on('afterDrawing', function(ctx) {
+    hyperedges.forEach(h => {
+        const positions = h.nodes
+            .map(nid => network.getPositions([nid])[nid])
+            .filter(p => p !== undefined);
+        if (positions.length < 2) return;
+        ctx.save();
+        ctx.globalAlpha = 0.12;
+        ctx.fillStyle = '#6366f1';
+        ctx.strokeStyle = '#6366f1';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        // Centroid and expanded hull in network coordinates
+        const cx = positions.reduce((s, p) => s + p.x, 0) / positions.length;
+        const cy = positions.reduce((s, p) => s + p.y, 0) / positions.length;
+        const expanded = positions.map(p => ({
+            x: cx + (p.x - cx) * 1.15,
+            y: cy + (p.y - cy) * 1.15
+        }));
+        ctx.moveTo(expanded[0].x, expanded[0].y);
+        expanded.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 0.4;
+        ctx.stroke();
+        // Label
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = '#4f46e5';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(h.label, cx, cy - 5);
+        ctx.restore();
+    });
+});
+</script>
+</body>
+</html>
