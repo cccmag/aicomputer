@@ -8,8 +8,8 @@
 
 * [資訊科技年鑑 -- 互動網頁](https://cccmag.github.io/aicomputer/_html/index.html)
 * 語意網路 graphify
-    * [繁體中文](graphify-out-tw/graph.html)
-    * [English](graphify-out-en/graph.html)
+    * [繁體中文](https://cccmag.github.io/aicomputer/graphify-out-tw/graph.html)
+    * [English](https://cccmag.github.io/aicomputer/graphify-out-en/graph.html)
 
 ## 年鑑列表
 
