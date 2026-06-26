@@ -547,6 +547,86 @@
 
     footer a { color: var(--accent); text-decoration: none; }
 
+    #tab-inference h2 {
+      font-size: 1.3rem; color: var(--accent2); margin: 1.5rem 0 0.8rem;
+      padding-bottom: 0.3rem; border-bottom: 2px solid var(--border);
+    }
+    #tab-inference h3 {
+      font-size: 1.1rem; color: var(--accent4); margin: 1.2rem 0 0.5rem;
+    }
+    #tab-inference p { font-size: 0.9rem; line-height: 1.6; margin: 0.5rem 0; color: #ccc; }
+    #tab-inference ul, #tab-inference ol { margin: 0.4rem 0 0.4rem 1.5rem; }
+    #tab-inference li { font-size: 0.88rem; line-height: 1.5; margin: 0.2rem 0; color: #bbb; }
+    #tab-inference table {
+      width: 100%; border-collapse: collapse; margin: 0.8rem 0;
+      font-size: 0.85rem;
+    }
+    #tab-inference th, #tab-inference td {
+      border: 1px solid var(--border); padding: 0.5rem 0.7rem; text-align: left;
+    }
+    #tab-inference th { background: var(--sidebar); color: #aab; font-weight: 600; }
+    #tab-inference td { background: var(--card); color: #bbb; }
+    #tab-inference strong { color: var(--gold); }
+    #tab-inference a { color: var(--accent); text-decoration: none; }
+    #tab-inference a:hover { text-decoration: underline; }
+    #tab-inference hr {
+      border: none; border-top: 1px solid var(--border); margin: 1.5rem 0;
+    }
+
+    .causal-tree {
+      background: linear-gradient(135deg, #0d0d18 0%, #14141f 100%);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 1rem 1.5rem; margin: 0.8rem 0;
+      font-family: "SF Mono", "Fira Code", "Noto Sans Mono CJK TC", monospace;
+      font-size: 0.82rem; line-height: 1.7;
+      overflow-x: auto; white-space: pre;
+      position: relative;
+      color: #889;
+    }
+    .causal-tree::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent4), var(--accent5), var(--accent2), var(--accent3));
+      border-radius: 12px 12px 0 0; opacity: 0.5;
+    }
+    .causal-tree-raw {
+      background: linear-gradient(135deg, #0d0d18 0%, #14141f 100%);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 1rem 1.5rem; margin: 0.8rem 0;
+      font-family: "SF Mono", "Fira Code", "Noto Sans Mono CJK TC", monospace;
+      font-size: 0.82rem; line-height: 1.7;
+      overflow-x: auto; white-space: pre; position: relative; color: #889;
+    }
+    .causal-tree-raw::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent3), var(--accent5));
+      border-radius: 12px 12px 0 0; opacity: 0.5;
+    }
+    .causal-tree .tc { color: #4a4a7a; font-weight: 300; }
+    .causal-tree .ty { color: #555577; font-size: 0.75rem; }
+    .causal-tree a {
+      color: #7ecfff; text-decoration: none;
+      padding: 0.06rem 0.25rem; border-radius: 4px;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+    }
+    .causal-tree a:hover {
+      color: #ffd700;
+      background: rgba(255, 215, 0, 0.1);
+      border-color: rgba(255, 215, 0, 0.25);
+    }
+
+    .inference-header {
+      text-align: center; margin-bottom: 2rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .inference-header h1 {
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
     @media (max-width: 768px) {
       .hero { padding: 30px 15px 20px; }
       .tabs { padding: 10px; justify-content: flex-start; }
@@ -557,7 +637,57 @@
       .turing-grid { grid-template-columns: 1fr; }
       .decade-grid { grid-template-columns: repeat(4, 1fr); }
     }
+    .tex {
+      background: #0d0d18; border: 1px solid #2a2a4a; border-radius: 10px;
+      padding: 1rem 1.5rem; margin: 0.6rem 0; text-align: center;
+      overflow-x: auto; font-size: 1.2rem;
+    }
+    #tab-math { max-width: 900px; margin: 0 auto; }
+    #tab-math h2 {
+      font-size: 1.3rem; color: #81c784; margin: 1.5rem 0 0.8rem;
+      padding-bottom: 0.3rem; border-bottom: 2px solid #2a4a2a;
+    }
+    #tab-math h3 {
+      font-size: 1.1rem; color: #4fc3f7; margin: 1.2rem 0 0.5rem;
+    }
+    #tab-math h4 {
+      font-size: 0.95rem; color: #ce93d8; margin: 1rem 0 0.4rem;
+    }
+    #tab-math p { font-size: 0.9rem; line-height: 1.6; margin: 0.5rem 0; color: #ccc; }
+    #tab-math ul, #tab-math ol { margin: 0.4rem 0 0.4rem 1.5rem; }
+    #tab-math li { font-size: 0.88rem; line-height: 1.5; margin: 0.2rem 0; color: #bbb; }
+    #tab-math strong { color: #81c784; }
+    #tab-math em { color: #b0bec5; }
+    #tab-math a { color: #81c784; text-decoration: none; }
+    #tab-math a:hover { text-decoration: underline; }
+    #tab-math hr {
+      border: none; border-top: 1px solid #2a2a3e; margin: 1.5rem 0;
+    }
+    #tab-math table {
+      width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.85rem;
+    }
+    #tab-math th, #tab-math td {
+      border: 1px solid #2a4a2a; padding: 0.5rem 0.7rem; text-align: left;
+    }
+    #tab-math th { background: #1a2a1a; color: #aab; font-weight: 600; }
+    #tab-math td { background: #182218; color: #bbb; }
+    #tab-math .tex {
+      background: #0d0d18; border: 1px solid #2a2a4a; border-radius: 10px;
+      padding: 1rem 1.5rem; margin: 0.6rem 0; text-align: center;
+      overflow-x: auto; font-size: 1.2rem;
+    }
+    #tab-math .math-header {
+      text-align: center; margin-bottom: 2rem; padding-bottom: 1rem;
+      border-bottom: 1px solid #2a4a2a;
+    }
+    #tab-math .math-header h1 {
+      font-size: 1.5rem; background: linear-gradient(90deg, #81c784, #a5d6a7, #81c784);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
   </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="hero">
@@ -570,6 +700,8 @@
     <button class="tab-btn" data-tab="browse">瀏覽全部</button>
     <button class="tab-btn" data-tab="turing">圖靈獎</button>
     <button class="tab-btn" data-tab="stats">統計資料</button>
+    <button class="tab-btn" data-tab="inference">🧠 科技推論</button>
+    <button class="tab-btn" data-tab="math">🔢 數學之鏈</button>
   </div>
 
   <div id="tab-timeline" class="tab-content active">
@@ -643,6 +775,475 @@
     <div class="turing-grid" id="statsGrid"></div>
   </div>
 
+  <div id="tab-inference" class="tab-content" style="max-width:900px;margin:0 auto;">
+    <div class="inference-header">
+      <h1>科技依存推論</h1>
+      <p style="color:#778;font-size:0.9rem;">沒有 A → 就沒有 B：76 年資訊科技的因果鏈</p>
+    </div>
+    <p>科技發展從來不是孤立事件，而是一條條環環相扣的長鏈。每一項新技術都建立在既有技術之上——沒有前人的基礎，就沒有後續的突破。這份文件從年鑑的 76 年跨度出發，梳理出資訊科技發展的關鍵依存關係。</p>
+
+    <h2>1. 從圖靈機到人工智慧</h2>
+    <pre><code>圖靈機概念 (1936)
+  └→ 圖靈測試 (1950)
+  │    └→ 人工智慧 (1956)
+  │         ├→ 專家系統 (1965)
+  │         ├→ 機器學習 (1980s)
+  │         │    └→ 深度學習 (2012)
+  │         │         ├→ GPT-3 (2020)
+  │         │         │    └→ 大型語言模型 (2020s)
+  │         │         │         └→ AI 代理 (2025)
+  │         │         └→ 電腦視覺 → 自動駕駛
+  │         └→ 深度學習 → AlphaFold (2021) └→ 藥物設計革命
+  └→ 儲存程式架構 (1945)
+       ├→ ENIAC (1946) → SEAC/SWAC (1950)
+       │    └→ 商用電腦 UNIVAC (1951) └→ 大型主機時代 (1960s)
+       └→ 馮紐曼架構 └→ 通用電子電腦 └→ 現代計算機體系</code></code></pre>
+    <p><strong>推論</strong>：沒有 1936 年圖靈的通用機概念，就沒有現代電腦的理論基礎。沒有 1950 年圖靈提出的「機器能否思考」問題，就沒有 1956 年達特矛斯會議開創的人工智慧領域。圖靈一個人的兩項貢獻——通用計算理論與 AI 願景——分別開啟了計算機科學與人工智慧兩大領域，這樣的影響力在科技史上極為罕見。</p>
+
+    <h2>2. 從電晶體到摩爾定律</h2>
+    <pre><code>電晶體 (1947)
+  └→ 積體電路 (1958)
+       └→ 摩爾定律 (1965)
+            ├→ 指數級成長
+            │    ├→ Intel 4004 (1971) └→ 微處理器時代
+            │    │    ├→ Intel 8080 (1974) └→ Altair 8800 (1975) └→ 個人電腦革命
+            │    │    ├→ Intel 80386 (1985) └→ 32 位元運算 └→ Windows 崛起
+            │    │    └→ ARM 架構 (1985) └→ Apple M1 (2020) └→ Apple M5 (2025)
+            │    └→ 記憶體容量翻倍 └→ 水銀延遲線 → 磁芯 → DRAM → SSD
+            └→ 自我實現預言 └→ 半導體產業路線圖</code></pre>
+    <p><strong>推論</strong>：沒有 1947 年貝爾實驗室的電晶體，就沒有 1958 年的積體電路。沒有積體電路，就沒有摩爾定律驅動的指數成長。沒有這條鏈條，就沒有今日的千億電晶體晶片——你的手機運算能力將倒退到 1970 年代的大型主機水準。</p>
+
+    <h2>3. 從大型主機到個人電腦</h2>
+    <pre><code>大型主機 (1950s)
+  ├→ 迷你電腦
+  │    ├→ PDP-8 (1965) └→ 迷你電腦普及
+  │    │    └→ Homebrew Computer Club (1975)
+  │    │         ├→ Apple II (1977) └→ 個人電腦家庭化
+  │    │         └→ Microsoft Altair BASIC (1975)
+  │    │              └→ MS-DOS (1981) └→ IBM PC (1981)
+  │    │                   ├→ 相容機生態系
+  │    │                   └→ Windows (1985) └→ Microsoft 帝國
+  │    └→ CDC 6600 (1965) └→ Cray-1 (1976) └→ 超級電腦時代
+  └→ 分時系統
+       └→ Project MAC (1965) └→ Multics └→ Unix (1969)
+            ├→ C 語言 └→ C++ (1985) └→ 物件導向程式設計
+            └→ 開源軟體運動 └→ Linux (1991)</code></pre>
+    <p><strong>推論</strong>：沒有 PDP-8 開創的迷你電腦市場，就沒有 1975 年 Altair 8800 的誕生。沒有 Homebrew Computer Club 的業餘愛好者社群，就沒有 Apple 和 Microsoft。微電腦革命不是突然發生的——它是一條從大型主機到迷你電腦、再到微電腦的漸進路徑，每一步都降低了運算的門檻。</p>
+
+    <h2>4. 從 ARPANET 到網際網路</h2>
+    <pre><code>ARPANET (1969)
+  ├→ 乙太網路 (1973) └→ DIX Ethernet (1980) └→ 辦公室網路化
+  ├→ TCP/IP (1983) └→ NSFNET (1985) └→ 商用網際網路 (1990s)
+  │    ├→ 全球資訊網 (1989) └→ Netscape Navigator (1994) └→ 瀏覽器大戰
+  │    ├→ 搜尋引擎 └→ Archie (1990) → Yahoo (1994) → Google (1998)
+  │    │    └→ 搜尋廣告商業模式
+  │    ├→ 達康泡沫 (2000) └→ Web 2.0 (2004)
+  │    │    ├→ 社群媒體 └→ Facebook (2004) → Instagram (2010)
+  │    │    └→ 雲端運算 (2006) └→ AWS (2006) → Microsoft Azure (2010)
+  │    └→ 寬頻網路 └→ 線上影音串流
+  └→ 電子郵件 (1971) └→ 網路通訊文化</code></pre>
+    <p><strong>推論</strong>：沒有 1969 年的 ARPANET，就沒有 TCP/IP 協定。沒有全球資訊網，就沒有 Netscape、Google 與 Facebook。網路效應（Metcalfe's Law）使得連線節點數量的成長帶來了價值的指數級增長——這就是網路從軍事研究計畫演變為人類文明最大平台的動力。</p>
+
+    <h2>5. 從桌面到雲端</h2>
+    <pre><code>個人電腦普及 (1980s)
+  ├→ 圖形使用者介面
+  │    ├→ Macintosh (1984) └→ Mac OS X (2001)
+  │    │    └→ iOS (2007) └→ iPad (2010) └→ 後 PC 時代
+  │    │         └→ Swift 程式語言 (2014)
+  │    └→ Windows 3.0 (1990) └→ Windows 95/98/2000 └→ PC 桌面壟斷
+  ├→ 套裝軟體 └→ Photoshop (1990) └→ 數位影像處理產業
+  └→ 前端開發技術
+       └→ JavaScript └→ AngularJS (2010) → Angular (2016)
+            └→ React (2013) └→ Vue.js (2014)</code></pre>
+    <p><strong>推論</strong>：個人電腦的普及創造了軟體產業。沒有 GUI，電腦就不會從專業工具變成大眾消費品。沒有圖形介面，就沒有 iPhone 的多點觸控——觸控是 GUI 理念在更小螢幕上的極致延伸。Mac OS X 的 Unix 核心、Aqua 介面和觸控手勢，直接孕育了 iOS 的誕生。</p>
+
+    <h2>6. 從數據機到物聯網</h2>
+    <pre><code>數據機 (1950s)
+  ├→ 撥接上網 (1990s) └→ 寬頻網路 (2000s) └→ 永遠在線的網路
+  │    ├→ 串流媒體 └→ YouTube (2005) → Netflix 串流 (2007)
+  │    ├→ Skype (2003) └→ Zoom (2011) └→ 遠距工作 → COVID-19 疫情 (2020)
+  │    └→ 雲端遊戲 └→ PlayStation 2 (2000) → Xbox Live (2002)
+  └→ 無線通訊
+       ├→ 藍牙 (2000) └→ 藍牙 4.0 BLE (2010) └→ 物聯網爆炸 └→ 智慧家庭
+       └→ Wi-Fi (1997) └→ 行動網路 → 3G/4G/5G └→ 智慧手機生態系</code></pre>
+    <p><strong>推論</strong>：沒有數據機就沒有撥接網路，沒有寬頻就沒有永遠在線的連線，沒有永遠在線就沒有串流媒體、雲端服務與遠距工作。從 56K 撥接聲到 Zoom 上的百萬人會議，網路頻寬的百萬倍成長改變了工作、娛樂與社交的型態。</p>
+
+    <h2>7. 從達康泡沫到雲端運算</h2>
+    <pre><code>達康泡沫破滅 (2000-2002)
+  ├→ 基礎設施未被摧毀 └→ 光纖骨幹、伺服器農場、寬頻覆蓋 └→ 下一波創新的基礎
+  ├→ 倖存者效應
+  │    ├→ Google (搜尋廣告) └→ 張量處理單元 (2016) └→ AI 訓練基礎設施
+  │    ├→ Amazon (電子商務基礎設施) └→ AWS (2006)
+  │    │    └→ 雲端運算時代 └→ Microsoft Azure (2010)
+  │    │         └→ GPT-3 API (2020) └→ AI 服務雲端化
+  │    └→ eBay (市集模式)
+  └→ Web 2.0 (2004) └→ 使用者生成內容 └→ 社群媒體 └→ SaaS 商業模式</code></pre>
+    <p><strong>推論</strong>：達康泡沫雖然消滅了無數「眼球經濟」新創，卻留下了光纖網路、伺服器農場和寬頻覆蓋率。沒有這些基礎設施，就沒有雲端運算。沒有雲端運算的彈性算力，就沒有大規模 AI 訓練。泡沫的毀滅性清理，恰好為下一波技術革命準備了土壤。</p>
+
+    <h2>8. 從量子力學到量子運算</h2>
+    <pre><code>量子力學 (1925-1927)
+  └→ 能帶理論 (1928) └→ 半導體物理
+       └→ 電晶體 (1947) └→ 摩爾定律 → 物理極限
+            └→ 量子效應成為限制 └→ 量子霸權追求 (2019)
+                 └→ Google Sycamore (2019) └→ Google Willow (2025)
+                      └→ 可驗證量子優勢
+  └→ 量子位元概念 └→ Shor 演算法 (1994)
+       └→ 量子運算硬體 └→ 超導量子位元 └→ Google / IBM 路線
+            └→ 離子阱 └→ IonQ / Honeywell 路線</code></pre>
+    <p><strong>推論</strong>：沒有量子力學就沒有半導體物理，沒有半導體就沒有現代計算機。而當電晶體縮小到原子尺度時，量子效應從「工程問題」變成了「物理限制」——這迫使我們反向利用量子力學來進行計算。摩爾定律的終點，恰好是量子運算的起點。</p>
+
+    <h2>9. 從儲存程式到 AI 代理</h2>
+    <pre><code>儲存程式架構 (1945) └→ 通用計算機 └→ 軟體概念誕生
+  ├→ 作業系統 └→ 分時系統 (1960s) → 虛擬化 (1970s) → 雲端運算 (2006)
+  ├→ 程式語言演化
+  │    ├→ BASIC (1965) → 大眾程式設計
+  │    ├→ C (1972) → Unix → 系統軟體
+  │    └→ C++ (1985) → 物件導向
+  └→ AI 軟體
+       ├→ 專家系統 (1965)
+       ├→ 機器學習 (1980s) └→ 深度學習 (2012)
+       │    └→ GPT-3 → ChatGPT (2022) └→ 大型語言模型
+       │         └→ 多模態 AI (2023-2025) └→ AI 代理 (2025)
+       │              └→ Claude Code └→ MCP 協定
+       └→ 張量處理單元 (2016) └→ AI 專用硬體 └→ Nvidia Blackwell (2025)</code></pre>
+    <p><strong>推論</strong>：儲存程式架構不僅是硬體設計，更開創了「軟體」的概念——將程式與硬體分離。這個分離使得技術演進可以分軌進行：硬體遵循摩爾定律，軟體則在抽象層次上不斷攀升。從機器語言到高階語言，從函式庫到 API，從應用程式到 AI 代理——每一次抽象層次的提升，都釋放了新的生產力。</p>
+
+    <h2>10. 硬體的歷史輪迴</h2>
+    <pre><code>大型主機 (1950s-1960s) └→ 集中運算、共享資源、專業管理
+       ↓ 典範轉移
+個人電腦 (1975-2000) └→ 分散運算、個人擁有、使用者管理
+       ↓ 典範轉移
+雲端運算 (2006-) └→ 集中運算、共享資源、專業管理
+       └→ 大型資料中心 → AI 訓練叢集
+       ↓ 典範轉移
+邊緣運算 + AI 晶片 (2020s-) └→ 分散運算、個人擁有、AI 加速
+       └→ Apple M5 Neural Engine └→ Nvidia Blackwell GPU</code></pre>
+    <p><strong>推論</strong>：科技發展常以螺旋形式重複自己。從大型主機的集中運算，到 PC 的分散運算，再到雲端的集中運算——運算型態在「集中」與「分散」之間擺盪。每一次擺盪都不是簡單的重複，而是在更高層次上的回歸。2025 年，我們正處於 AI 專用硬體驅動的新一輪分散化進程中。</p>
+
+    <h2>11. 跨領域依存</h2>
+    <pre><code>半導體製造 ←────→ 電腦設計 ←────→ 軟體開發
+    │                    │                  │
+    ↓                    ↓                  ↓
+   更小電晶體          更高頻率           更多抽象層
+    │                    │                  │
+    └──────────┬──────────┘                 │
+               │                            │
+               ↓                            ↓
+           摩爾定律                     應用爆炸
+               │                            │
+               └──────────┬──────────┘
+                          ↓
+                     現代數位社會</code></pre>
+    <h3>具體範例</h3>
+    <table>
+      <thead>
+        <tr><th>技術產品</th><th>依賴於</th><th>再依賴於</th><th>最根本的基礎</th></tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="8">iPhone</td><td>多點觸控螢幕</td><td>圖形介面研究</td><td>儲存程式架構 (1945)</td></tr>
+        <tr><td>ARM 處理器</td><td>積體電路</td><td>電晶體 (1947)</td></tr>
+        <tr><td>行動網路</td><td>無線電技術</td><td>馬克士威方程組 (1864)</td></tr>
+        <tr><td>iOS / App Store</td><td>Mac OS X Unix 核心</td><td>分時系統 (1960s)</td></tr>
+        <tr><td>GPS</td><td>衛星 / 原子鐘</td><td>相對論 (1905/1915)</td></tr>
+        <tr><td>Siri</td><td>深度學習</td><td>圖靈測試 (1950)</td></tr>
+        <tr><td rowspan="3">ChatGPT</td><td>GPT-3 / Transformer</td><td>深度學習 (2012)</td><td>圖靈機 (1936)</td></tr>
+        <tr><td>雲端訓練基礎設施</td><td>Amazon/Azure 資料中心</td><td>網際網路 (1983)</td></tr>
+        <tr><td>GPU 運算</td><td>Nvidia CUDA</td><td>摩爾定律 (1965)</td></tr>
+        <tr><td rowspan="3">個人電腦</td><td>微處理器</td><td>積體電路</td><td>電晶體 (1947)</td></tr>
+        <tr><td>圖形作業系統</td><td>滑鼠 / GUI (Xerox PARC)</td><td>儲存程式架構 (1945)</td></tr>
+        <tr><td>軟體生態系</td><td>磁碟儲存</td><td>磁性記錄 (1898)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>12. 結論：技術樹與路徑依賴</h2>
+    <p>從這份年鑑的 76 年跨度來看，資訊科技的發展呈現鮮明的樹狀結構：</p>
+    <p><strong>每一項重大技術都有一個不可跳過的先決條件節點：</strong></p>
+    <ul>
+      <li>沒有 <strong>圖靈機概念</strong> → 就沒有儲存程式架構 → 也就沒有現代電腦</li>
+      <li>沒有 <strong>電晶體</strong> → 就沒有積體電路 → 也就沒有摩爾定律驅動的指數成長</li>
+      <li>沒有 <strong>ARPANET</strong> → 就沒有 TCP/IP → 也就沒有網際網路</li>
+      <li>沒有 <strong>全球資訊網</strong> → 就沒有搜尋引擎 → 也就沒有 Google 與現代網路經濟</li>
+      <li>沒有 <strong>深度學習</strong> → 就沒有大型語言模型 → 也就沒有 AI 代理革命</li>
+    </ul>
+    <p><strong>先決條件的先決條件：</strong></p>
+    <ul>
+      <li>沒有 <strong>布林代數</strong> (1854) → 就沒有邏輯電路 → 就沒有現代計算機</li>
+      <li>沒有 <strong>電磁學</strong> (1864) → 就沒有無線電 → 就沒有乙太網路與 Wi-Fi</li>
+      <li>沒有 <strong>量子力學</strong> (1925) → 就沒有半導體 → 就沒有整個資訊時代</li>
+      <li>沒有 <strong>數學</strong> → 什麼都沒有</li>
+    </ul>
+    <p><strong>路徑依賴：</strong>一旦選擇了某條技術路線，後續發展就被鎖定在這條路徑上。</p>
+    <ul>
+      <li>x86 架構 → 數十年的軟體相容性累積 → 即使 ARM 更高效也難以撼動桌面市場</li>
+      <li>QWERTY 鍵盤 → 即使效率不是最佳，也無法改變</li>
+      <li>矽基半導體 → 整個產業鏈圍繞矽建立</li>
+      <li>Windows API → 數十萬應用程式的生態系 → Microsoft 數十年的市場主導</li>
+      <li>TCP/IP → 整個網際網路的基礎協定 → 即使有更好的協定也無法取代</li>
+    </ul>
+    <p><strong>創新並非憑空出現，而是在既有技術的邊界上向前邁出的一小步。</strong>了解這些依存關係，不僅幫助我們理解歷史，更能指引未來的創新方向——真正的突破往往來自於找到並解開那些制約下一步發展的關鍵節點。</p>
+
+    <hr>
+    <p><strong>延伸閱讀：</strong></p>
+    <ul>
+      <li><a href="https://github.com/cccmag/aicomputer" target="_blank">資訊科技年鑑（1950-2025）</a></li>
+      <li><a href="https://cccmag.github.io/aicomputer/graphify-out-tw/graph.html" target="_blank">知識圖譜（中文）</a></li>
+      <li><a href="https://zh.wikipedia.org/wiki/%E8%AE%A1%E7%AE%97%E7%A1%AC%E4%BB%B6%E5%8E%86%E5%8F%B2" target="_blank">維基百科：電腦硬體歷史</a></li>
+      <li><a href="https://zh.wikipedia.org/wiki/%E4%BA%92%E8%81%94%E7%BD%91%E5%8E%86%E5%8F%B2" target="_blank">維基百科：網際網路歷史</a></li>
+      <li><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%8F%B2" target="_blank">維基百科：人工智慧歷史</a></li>
+    </ul>
+  </div>
+
+  <div id="tab-math" class="tab-content">
+    <div class="math-header">
+      <h1>數學之鏈：資訊科技背後的數學基礎</h1>
+      <p style="color:#778;font-size:0.9rem;">沒有數學 → 就沒有電腦科學 → 就沒有資訊科技 → 就沒有現代數位文明</p>
+    </div>
+
+    <p>每一項改變世界的技術，背後都站著一條數學定理。從你口袋裡的手機到雲端的大型語言模型，從網路搜尋到 GPS 導航——若抽離了數學，整座科技大廈將轟然倒塌。這份文件揭示那些隱藏在資訊科技背後的數學力量。</p>
+
+    <h2>1. 從布林代數到數位世界</h2>
+    <p>沒有<a href="https://zh.wikipedia.org/wiki/布爾代數" target="_blank" rel="noopener">布林</a>，就沒有電腦——這句話毫不誇張。</p>
+    <div class="tex">$$F(x, y, z) = (x \land y) \lor (\lnot y \land z)$$</div>
+    <pre><code>布林代數 (Boole, 1854)
+  └→ 邏輯閘理論 (Shannon, 1938)
+       ├→ 數位電路設計
+       │    ├→ 算術邏輯單元 (ALU)
+       │    ├→ 記憶體位址解碼
+       │    └→ 處理器控制單元
+       │         └→ 馮紐曼架構 (1945)
+       │              ├→ 通用電腦 → 大型主機 (1950s) → 個人電腦 (1975) → 智慧手機 (2007)
+       │              └→ GPU 運算 → 深度學習 (2012)
+       └→ 布林運算最佳化 → 邏輯合成 → EDA 工具 → 硬體描述語言
+
+任何邏輯函數都可以用 AND、OR、NOT 三種運算來表達。</code></pre>
+    <p><strong>推論</strong>：沒有 1854 年布林的邏輯代數，<a href="https://zh.wikipedia.org/wiki/克劳德·香农" target="_blank" rel="noopener">香農</a>就無法在 1938 年用繼電器實現邏輯閘，也就沒有數位電路。沒有數位電路，就沒有電腦——每一行程式碼，本質上都是布林運算的組合。</p>
+
+    <h2>2. 從傅立葉分析到數位媒體</h2>
+    <p>你聽的 MP3、看的 JPEG、打的電話——全都靠<a href="https://zh.wikipedia.org/wiki/傅里叶变换" target="_blank" rel="noopener">傅立葉變換</a>。</p>
+    <div class="tex">$$f(t) = \sum_{n=-\infty}^{\infty} c_n e^{i n \omega t}$$</div>
+    <pre><code>傅立葉級數 (Fourier, 1822)
+  └→ 傅立葉變換
+       ├→ 離散傅立葉變換 (DFT) → FFT (1965)
+       │    ├→ JPEG 壓縮 (1992) → DCT → 數位照片
+       │    ├→ MP3 壓縮 (1993) → MDCT → 數位音樂革命
+       │    └→ 數位通信 → OFDM → WiFi (1997) → 4G (2009) → 5G (2019)
+       └→ 頻譜分析 → 雷達信號處理 → CT 重建 → 語音辨識
+
+從時域到頻域，傅立葉變換讓我們用全新的視角看世界。</code></pre>
+    <p><strong>推論</strong>：沒有傅立葉分析，就沒有 <a href="https://zh.wikipedia.org/wiki/JPEG" target="_blank" rel="noopener">JPEG</a> 和 <a href="https://zh.wikipedia.org/wiki/MP3" target="_blank" rel="noopener">MP3</a>——你的手機將無法儲存照片或音樂，YouTube 和 Spotify 根本不可能存在。沒有 OFDM，就沒有 WiFi 和 4G/5G。</p>
+
+    <h2>3. 從線性代數到人工智慧</h2>
+    <p>深度學習的本質，就是一連串的<a href="https://zh.wikipedia.org/wiki/矩阵乘法" target="_blank" rel="noopener">矩陣乘法</a>。</p>
+    <div class="tex">$$\mathbf{y} = \sigma(\mathbf{W}\mathbf{x} + \mathbf{b})$$</div>
+    <pre><code>線性代數
+  ├→ 矩陣運算 → GPU → CUDA (2007) → 深度學習訓練
+  │    ├→ 神經網路 → 感知機 (1957) → MLP → 反向傳播 (1986) → 深度學習 (2006)
+  │    │    ├→ CNN (1989) → 影像分類 → 人臉辨識 → 自動駕駛
+  │    │    ├→ RNN → LSTM (1997) → 語音辨識 → Siri (2011)
+  │    │    └→ Transformer (2017) → BERT → GPT → ChatGPT (2022)
+  │    ├→ 嵌入 → Word2Vec (2013) → 語義搜尋
+  │    └→ 奇異值分解 (SVD) → 推薦系統 → Netflix / YouTube
+  ├→ 特徵值 → PCA → 數據科學
+  └→ 向量空間 → 編碼理論 → 糾錯碼 → 衛星通信
+
+神經網路訓練：權重矩陣的反覆更新。</code></pre>
+    <div class="tex">$$\mathbf{W}^{(l+1)} = \mathbf{W}^{(l)} - \eta \frac{\partial \mathcal{L}}{\partial \mathbf{W}^{(l)}}$$</div>
+    <p><strong>推論</strong>：沒有<a href="https://zh.wikipedia.org/wiki/线性代数" target="_blank" rel="noopener">線性代數</a>，就沒有<a href="https://zh.wikipedia.org/wiki/人工神经网络" target="_blank" rel="noopener">神經網路</a>——它們本質上就是一連串的矩陣乘法加上非線性激活函數。沒有 GPU 的大規模矩陣運算，深度學習就無法訓練。沒有 <a href="https://zh.wikipedia.org/wiki/Transformer_(模型)" target="_blank" rel="noopener">Transformer</a> 中的注意力機制，就沒有 ChatGPT。</p>
+
+    <h2>4. 從機率論到機器學習</h2>
+    <p>機器學習的每一個環節——從貝氏分類器到大型語言模型——都建構在<a href="https://zh.wikipedia.org/wiki/概率论" target="_blank" rel="noopener">機率論</a>之上。</p>
+    <div class="tex">$$P(A|B) = \frac{P(B|A)P(A)}{P(B)}$$</div>
+    <pre><code>機率論
+  ├→ 貝氏統計 → 貝氏分類器 → 垃圾郵件過濾
+  │    ├→ 馬可夫鏈 → MDP → 強化學習 → AlphaGo (2016) → 機器人控制
+  │    └→ 隱馬可夫模型 (HMM) → 語音辨識 → 基因序列分析
+  ├→ 最大似然估計 (MLE) → 迴歸分析 → 預測模型 → 深度學習損失函數
+  ├→ 蒙地卡羅方法 → 粒子濾波 → GPS 定位 → MCMC → 貝氏統計
+  └→ 中央極限定理 → 統計推論 → A/B 測試 → 產品決策
+
+大型語言模型的「下一個詞預測」本質上就是條件機率。</code></pre>
+    <p><strong>推論</strong>：沒有<a href="https://zh.wikipedia.org/wiki/贝叶斯定理" target="_blank" rel="noopener">貝氏定理</a>，就沒有垃圾郵件過濾器。沒有<a href="https://zh.wikipedia.org/wiki/马尔可夫链" target="_blank" rel="noopener">馬可夫鏈</a>，就沒有<a href="https://zh.wikipedia.org/wiki/强化学习" target="_blank" rel="noopener">強化學習</a>和 AlphaGo。沒有最大似然估計，就沒有訓練神經網路的數學框架。</p>
+
+    <h2>5. 從數論到密碼學</h2>
+    <p>每一筆網路交易、每一則加密訊息——都依賴<a href="https://zh.wikipedia.org/wiki/数论" target="_blank" rel="noopener">數論</a>。</p>
+    <div class="tex">$$c \equiv m^e \pmod{n}$$</div>
+    <pre><code>數論
+  ├→ 質數理論 → RSA 加密 (1977) → HTTPS → 電子商務 → Amazon、銀行交易
+  │    └→ 數位簽章 → 軟體信任 → 作業系統更新
+  ├→ 離散對數問題 → Diffie-Hellman 金鑰交換 (1976) → SSH, VPN
+  └→ 橢圓曲線理論 → ECC (1985) → 比特幣 (2009) → 區塊鏈 → Ethereum (2015)
+
+RSA 安全性：因數分解 n = p × q 在計算上不可行。</code></pre>
+    <p><strong>推論</strong>：沒有數論的質數理論，就沒有 <a href="https://zh.wikipedia.org/wiki/RSA加密算法" target="_blank" rel="noopener">RSA 加密</a>。沒有 RSA 和 ECC，就沒有 HTTPS——你現在看的每一個網站都將不安全。沒有區塊鏈的密碼學基礎，就沒有<a href="https://zh.wikipedia.org/wiki/比特币" target="_blank" rel="noopener">比特幣</a>。</p>
+
+    <h2>6. 從密碼學到數位信任</h2>
+    <p>每一筆網路交易、每一則加密訊息、每一枚加密貨幣——都建立在<a href="https://zh.wikipedia.org/wiki/密码学" target="_blank" rel="noopener">密碼學</a>之上。</p>
+    <div class="tex">$$c \equiv m^e \pmod{n}$$</div>
+    <pre><code>密碼學
+  ├→ 古典密碼 → 凱薩密碼 → Enigma → 破譯 → 電腦誕生
+  ├→ 對稱式加密 → DES (1977) → AES (2001) → 檔案加密、磁碟加密
+  ├→ 非對稱式加密 (公鑰密碼學)
+  │    ├→ Diffie-Hellman 金鑰交換 (1976) → SSH, VPN, TLS 交握
+  │    ├→ RSA (Rivest-Shamir-Adleman, 1977) → HTTPS → 電子商務
+  │    │    └→ 數位簽章 → 程式碼簽署 → 軟體信任鏈
+  │    └→ 橢圓曲線密碼學 ECC (1985)
+  │         ├→ 比特幣 (2009) → 區塊鏈 → 加密貨幣革命
+  │         │    └→ 智能合約 → Ethereum (2015) → DeFi → NFT
+  │         └→ 現代 HTTPS → TLS 1.3 (2018) → 更高效的金鑰交換
+  ├→ 哈希函數 → MD5 → SHA-1 → SHA-256/SHA-3
+  │    ├→ 密碼儲存 → bcrypt → 身分驗證
+  │    ├→ 數位指紋 → 檔案完整性 → 軟體更新驗證
+  │    └→ 工作量證明 (PoW) → 比特幣挖礦 → 區塊鏈共識機制
+  └→ 零知識證明 → zk-SNARKs → 隱私保護 → 區塊鏈擴容
+
+RSA 安全性：因數分解 n = p × q 在計算上不可行。
+區塊鏈：哈希鏈結 + 共識機制 = 去中心化信任。</code></pre>
+    <p><strong>推論</strong>：沒有 1976 年 Diffie 與 Hellman 的公鑰密碼學構想，就沒有 RSA。沒有 RSA 和 ECC，就沒有 HTTPS——網路電子商務將無法安全運作。沒有密碼學的哈希函數與數位簽章，就沒有 2009 年的比特幣和後續的區塊鏈革命。Diffie 與 Hellman 在 2015 年獲得圖靈獎，表彰他們對現代密碼學的奠基貢獻——這項技術從軍事機密變成了每個人每天使用的基础設施。</p>
+
+    <h2>7. 從圖論到網路時代</h2>
+    <p>從 Google 地圖到社群推薦——<a href="https://zh.wikipedia.org/wiki/图论" target="_blank" rel="noopener">圖論</a>無所不在。</p>
+    <div class="tex">$$\text{PageRank}(u) = \sum_{v \in B_u} \frac{\text{PageRank}(v)}{L(v)}$$</div>
+    <pre><code>圖論 (Euler, 1736)
+  ├→ 最短路徑 → Dijkstra (1956) → GPS 導航 → Google Maps → 物流規畫
+  ├→ 最小生成樹 → Kruskal / Prim → 網路設計 → 電路佈線
+  ├→ 圖著色 → 頻率分配 → 無線通信 → 暫存器分配 → 編譯器
+  ├→ 網路流 → 最大流量 → 網路頻寬管理 → 匹配理論 → Uber 配對
+  └→ 社群網路分析 → PageRank (1998) → 搜尋引擎 → 知識圖譜 (2012)
+
+在圖上尋找最短路徑，是導航系統的核心。</code></pre>
+    <p><strong>推論</strong>：沒有 <a href="https://zh.wikipedia.org/wiki/戴克斯特拉算法" target="_blank" rel="noopener">Dijkstra 演算法</a>，就沒有 GPS 導航。沒有 <a href="https://zh.wikipedia.org/wiki/PageRank" target="_blank" rel="noopener">PageRank</a>，就沒有 Google。沒有圖著色，無線通信的頻譜分配將陷入混亂。</p>
+
+    <h2>8. 從資訊理論到數位通信</h2>
+    <p><a href="https://zh.wikipedia.org/wiki/克劳德·香农" target="_blank" rel="noopener">香農</a>在 1948 年發表的《通信的數學理論》開創了資訊時代。</p>
+    <div class="tex">$$C = B \log_2(1 + \frac{S}{N})$$</div>
+    <pre><code>香農資訊理論 (Shannon, 1948)
+  ├→ 資訊熵 H = -∑ p_i log₂ p_i
+  │    ├→ 資料壓縮 → 霍夫曼編碼 → ZIP、PNG → 算術編碼 → JPEG、影片
+  │    └→ 交叉熵 → 深度學習損失函數
+  ├→ 通道容量 C = B log₂(1 + SNR)
+  │    ├→ 數位通信 → 數據機 → 寬頻 → 光纖
+  │    └→ 無線通道 → 3G (2001) → 4G (2009) → 5G (2019)
+  └→ 糾錯碼 → 漢明碼 (1950) → ECC 記憶體 → Reed-Solomon (1960) → CD/DVD/QR Code
+       └→ 渦輪碼 → 衛星通信 → LDPC → WiFi → 5G NR → 數位電視
+
+通道容量公式告訴我們通信的理論極限。</code></pre>
+    <p><strong>推論</strong>：沒有<a href="https://zh.wikipedia.org/wiki/信息论" target="_blank" rel="noopener">資訊理論</a>，就沒有資料壓縮——你的手機將無法儲存任何照片。沒有通道容量公式，我們不知道通信的極限。沒有糾錯碼，CD 會因為刮傷而無法播放。</p>
+
+    <h2>9. 從計算理論到電腦科學</h2>
+    <p><a href="https://zh.wikipedia.org/wiki/图灵机" target="_blank" rel="noopener">圖靈機</a>是電腦科學的起點——它定義了「什麼是可計算的」。</p>
+    <pre><code>計算理論
+  ├→ 圖靈機 (Turing, 1936)
+  │    ├→ 馮紐曼架構 (1945) → 儲存程式電腦 → 軟體概念誕生
+  │    ├→ 圖靈測試 (1950) → 人工智慧 (1956) → ChatGPT (2022)
+  │    └→ 可計算性理論 → 停機問題 → 程式驗證
+  ├→ 計算複雜性理論 → P vs NP → 密碼學安全性基礎
+  └→ 形式語言 (Chomsky, 1956) → 正規表達式 → 編譯器設計
+
+NP-Complete：若一個 NP-Complete 問題可在多項式時間內解決，則所有 NP 問題皆可。</code></pre>
+    <p><strong>推論</strong>：沒有 1936 年<a href="https://zh.wikipedia.org/wiki/艾伦·图灵" target="_blank" rel="noopener">圖靈</a>的通用機概念，就沒有電腦科學。沒有<a href="https://zh.wikipedia.org/wiki/计算复杂性理论" target="_blank" rel="noopener">計算複雜性理論</a>，我們無法理解哪些問題可高效解決。<a href="https://zh.wikipedia.org/wiki/P/NP问题" target="_blank" rel="noopener">P vs NP</a> 是電腦科學最大的未解之謎。</p>
+
+    <h2>10. 從微積分到 AI 訓練</h2>
+    <p><a href="https://zh.wikipedia.org/wiki/微积分学" target="_blank" rel="noopener">微積分</a>是工程的語言——從橋樑應力到 AI 訓練，處處可見。</p>
+    <div class="tex">$$\theta_{t+1} = \theta_t - \eta \nabla_{\theta} \mathcal{L}(\theta_t)$$</div>
+    <pre><code>微積分
+  ├→ 微分 → 變化率 → 梯度 → 梯度下降法
+  │    └→ 機器學習訓練 → 線性迴歸 → 反向傳播 (1986) → 深度學習
+  ├→ 積分 → 面積體積 → 結構力學 → 建築 → 數值積分 → 氣候模型
+  └→ 變分法 → 最小作用量原理 → 最佳控制 → 火箭軌道
+
+梯度下降——機器學習的核心引擎。</code></pre>
+    <p><strong>推論</strong>：沒有微積分的梯度概念，就無法訓練神經網路——<a href="https://zh.wikipedia.org/wiki/反向传播算法" target="_blank" rel="noopener">反向傳播</a>本質上就是鏈鎖律的應用。每一次大型語言模型的訓練，背後都是數十億次的梯度計算。</p>
+
+    <h2>11. 從統計學到數據科學</h2>
+    <p><a href="https://zh.wikipedia.org/wiki/统计学" target="_blank" rel="noopener">統計學</a>是數據時代的語言——沒有它，就無法從數據中提取可靠的結論。</p>
+    <div class="tex">$$r = \frac{\sum{(x_i - \bar{x})(y_i - \bar{y})}}{\sqrt{\sum{(x_i - \bar{x})^2}\sum{(y_i - \bar{y})^2}}}$$</div>
+    <pre><code>統計學
+  ├→ 描述統計 → 平均數、標準差 → 品質管制 → Six Sigma → 製造業
+  ├→ 推論統計
+  │    ├→ 假設檢定 → A/B 測試 → 產品設計 → 臨床試驗 → 藥物批准 → 流行病學
+  │    └→ 迴歸分析 → 線性迴歸 → 預測模型 → 邏輯迴歸 → 風險評估
+  ├→ 實驗設計 → RCT → 實證醫學 → ANOVA → 農業實驗 → 綠色革命
+  └→ 多變量分析 → 因子分析 → 心理測量 → 聚類分析 → 市場區隔
+
+統計是數據時代的語言。</code></pre>
+    <p><strong>推論</strong>：沒有統計學的假設檢定，就無法判斷藥物是否有效。沒有 A/B 測試，科技公司無法科學地優化產品。統計學是數據科學的基礎語言。</p>
+
+    <h2>12. 從幾何學到時空與影像</h2>
+    <p>從愛因斯坦的時空彎曲到手機的相機鏡頭——<a href="https://zh.wikipedia.org/wiki/几何学" target="_blank" rel="noopener">幾何學</a>無所不在。</p>
+    <div class="tex">$$ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2$$</div>
+    <pre><code>幾何學
+  ├→ 歐幾里得幾何
+  │    ├→ 計算機圖學 → 3D 渲染 → Pixar 電影 → 電玩
+  │    │    └→ 圖靈獎 2019: Catmull & Hanrahan
+  │    ├→ CAD/CAM → 產品設計 → 3D 列印 (1980s)
+  │    └→ 光學設計 → 鏡頭設計 → 相機、手機鏡頭 → 顯微鏡、望遠鏡
+  ├→ 非歐幾何 → 黎曼幾何 → 廣義相對論 (Einstein, 1915)
+  │    └→ GPS 相對論校正 → 衛星導航
+  └→ 微分幾何 → 電腦視覺 → 3D 重建 → 物體辨識
+
+GPS 每日需要數百公尺的相對論校正。</code></pre>
+    <p><strong>推論</strong>：沒有黎曼幾何，愛因斯坦就無法寫出<a href="https://zh.wikipedia.org/wiki/广义相对论" target="_blank" rel="noopener">廣義相對論</a>。沒有廣義相對論，GPS 的誤差將無法校正。沒有<a href="https://zh.wikipedia.org/wiki/计算机图形学" target="_blank" rel="noopener">計算機圖學</a>的幾何基礎，就沒有 3D 渲染和 GPU。</p>
+
+    <h2>13. 從群論到晶片與物理</h2>
+    <p><a href="https://zh.wikipedia.org/wiki/群论" target="_blank" rel="noopener">群論</a>是研究對稱性的數學——從基本粒子到晶體結構。</p>
+    <div class="tex">$$[G_{\mu}, G_{\nu}] = i f_{\mu\nu\rho} G_{\rho}$$</div>
+    <pre><code>群論 (Galois, 1832)
+  ├→ 李群與李代數 → 標準模型 SU(3) × SU(2) × U(1) → 粒子物理
+  ├→ 晶體群 → 半導體晶體 → 能帶理論 → 電晶體 (1947)
+  │    └→ 積體電路 (1958) → 摩爾定律 → 現代晶片
+  └→ 表示論 → 量子化學 → 分子軌道 → 藥物設計
+
+群論描述了自然界中的對稱性。</code></pre>
+    <p><strong>推論</strong>：沒有群論的<a href="https://zh.wikipedia.org/wiki/晶体学" target="_blank" rel="noopener">晶體學</a>，就無法理解半導體晶體結構。沒有對半導體能帶理論的理解，就沒有 1947 年的<a href="https://zh.wikipedia.org/wiki/晶体管" target="_blank" rel="noopener">電晶體</a>和 1958 年的積體電路。</p>
+
+    <h2>總結：數學是資訊科技的隱藏語言</h2>
+    <table>
+      <thead>
+        <tr><th>數學分支</th><th>關鍵概念</th><th>催生技術</th><th>影響領域</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>布林代數</strong></td><td>邏輯運算</td><td>數位電路、電腦</td><td>整個數位世界</td></tr>
+        <tr><td><strong>傅立葉分析</strong></td><td>頻域變換</td><td>JPEG、MP3、OFDM</td><td>數位媒體、通信</td></tr>
+        <tr><td><strong>線性代數</strong></td><td>矩陣運算</td><td>神經網路、GPU</td><td>AI、遊戲、影像</td></tr>
+        <tr><td><strong>機率論</strong></td><td>不確定性量化</td><td>機器學習、密碼學</td><td>AI、安全</td></tr>
+        <tr><td><strong>數論</strong></td><td>質數、同餘</td><td>因數分解、同餘運算</td><td>密碼學基礎</td></tr>
+        <tr><td><strong>密碼學</strong></td><td>公鑰加密、哈希</td><td>RSA、ECC、區塊鏈</td><td>網路安全、加密貨幣</td></tr>
+        <tr><td><strong>圖論</strong></td><td>網路結構</td><td>GPS 導航、PageRank</td><td>交通、搜尋</td></tr>
+        <tr><td><strong>資訊理論</strong></td><td>熵與通道容量</td><td>壓縮、糾錯碼</td><td>通信、儲存</td></tr>
+        <tr><td><strong>計算理論</strong></td><td>可計算性、複雜性</td><td>電腦科學基礎、密碼學</td><td>整個電腦科學</td></tr>
+        <tr><td><strong>微積分</strong></td><td>變化與累積</td><td>梯度下降、工程設計</td><td>AI、工程</td></tr>
+        <tr><td><strong>統計學</strong></td><td>推論與顯著性</td><td>A/B 測試、臨床試驗</td><td>科學、產品</td></tr>
+        <tr><td><strong>幾何學</strong></td><td>空間與形狀</td><td>GPS、3D 渲染</td><td>導航、娛樂</td></tr>
+        <tr><td><strong>群論</strong></td><td>對稱性</td><td>標準模型、晶體學</td><td>物理、材料</td></tr>
+      </tbody>
+    </table>
+
+    <hr>
+    <p><strong>最後的推論</strong></p>
+    <p><strong>沒有數學，就沒有電腦科學。沒有電腦科學，就沒有資訊科技。沒有資訊科技，就沒有現代數位文明。</strong></p>
+    <p>當你拿起手機時，你握著的不是一部裝置——而是一團凝固的數學：</p>
+    <ul>
+      <li>運算靠 <strong>布林代數</strong> 和 <strong>線性代數</strong></li>
+      <li>通訊靠 <strong>傅立葉分析</strong> 和 <strong>資訊理論</strong></li>
+      <li>定位靠 <strong>幾何學</strong> 和 <strong>相對論</strong></li>
+      <li>加密靠 <strong>密碼學</strong>（RSA + 區塊鏈）</li>
+      <li>AI 靠 <strong>線性代數</strong>、<strong>微積分</strong>、<strong>機率論</strong></li>
+      <li>照片和音樂靠 <strong>傅立葉分析</strong></li>
+      <li>晶片靠 <strong>群論</strong></li>
+    </ul>
+    <p>數學不是一門在教室裡考試用的科目——<strong>它是這個世界運作的原始碼</strong>。</p>
+
+    <hr>
+    <p><strong>延伸閱讀：</strong></p>
+    <ul>
+      <li><a href="https://github.com/cccmag/aicomputer/blob/master/math.md" target="_blank" rel="noopener">完整版：數學之鏈（Markdown）</a></li>
+      <li><a href="https://zh.wikipedia.org/wiki/数学史" target="_blank" rel="noopener">維基百科：數學史</a></li>
+      <li><a href="https://zh.wikipedia.org/wiki/应用数学" target="_blank" rel="noopener">維基百科：應用數學</a></li>
+      <li><a href="https://github.com/cccmag/aicomputer" target="_blank" rel="noopener">資訊科技年鑑（1950-2025）</a></li>
+      <li><a href="https://cccmag.github.io/aicomputer/graphify-out-tw/graph.html" target="_blank" rel="noopener">知識圖譜（中文）</a></li>
+    </ul>
+  </div>
+
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
       <div class="modal-header">
@@ -658,6 +1259,13 @@
   </footer>
 
   <script>
+    function esc(s) {
+      if (!s) return '';
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
     const yearData = {
       1950: { title: "圖靈測試與儲存程式電腦時代", highlights: ["圖靈測試概念提出", "SEAC 首部儲存程式電腦", "Whirlwind 即時計算系統", "ERA 1101 商業電腦"], category: "hardware", hasTuring: false, desc: "1950 年是現代計算的黎明時期。圖靈提出了著名的「圖靈測試」概念，為人工智慧奠定了思想基礎。" },
       1951: { title: "UNIVAC I 商業化元年", highlights: ["UNIVAC I 正式交付", "LEO I 商業電腦", "Ferranti Mark I", "Short Code 程式語言"], category: "hardware", hasTuring: false, desc: "UNIVAC I 成為第一台商業化的電子計算機，被美國人口普查局採用。" },
@@ -887,6 +1495,9 @@
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.getElementById('tab-' + tabId).classList.add('active');
       document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+      if (tabId === 'math') {
+        try { renderMathInElement(document.getElementById('tab-math'), {delimiters:[{left:'$$',right:'$$',display:true}]}); } catch(e) {}
+      }
     }
 
     function renderYearCards(filter = 'all', decade = null, search = '') {
@@ -1077,11 +1688,103 @@
     });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
+    function getConceptUrl(concept) {
+      const wiki = 'https://zh.wikipedia.org/wiki/';
+      const map = {
+        'ENIAC': 'ENIAC', 'SEAC': 'SEAC', 'SWAC': 'SWAC',
+        'UNIVAC': 'UNIVAC', 'PDP-8': 'PDP-8', 'CDC 6600': 'CDC6600',
+        'Cray-1': 'Cray-1', 'Altair 8800': 'Altair_8800',
+        'IBM PC': 'IBM_Personal_Computer', 'Apple II': 'Apple_II',
+        'Macintosh': 'Macintosh', 'iPhone': 'iPhone',
+        'iPad': 'iPad', 'Windows 3.0': 'Windows_3.0',
+        'Windows 95': 'Windows_95', 'Windows 2000': 'Windows_2000',
+        'MS-DOS': 'MS-DOS', 'Windows': 'Microsoft_Windows',
+        'Mac OS X': 'Mac_OS_X', 'iOS': 'IOS',
+        'Linux': 'Linux', 'Unix': 'Unix',
+        'Multics': 'Multics', 'BASIC': 'BASIC',
+        'C 語言': 'C语言', 'C++': 'C++',
+        'Java': 'Java', 'JavaScript': 'JavaScript',
+        'Python': 'Python', 'Swift 程式語言': 'Swift',
+        'HTML': 'HTML', 'TCP/IP': 'TCP/IP协议族',
+        'ARPANET': 'ARPANET', 'Ethernet': '以太网',
+        'Wi-Fi': 'Wi-Fi', 'Bluetooth': '蓝牙',
+        'DNS': '域名系统', 'HTTP': '超文本传输协议',
+        'WWW': '万维网', 'World Wide Web': '万维网',
+        '全球資訊網': '万维网', 'Netscape Navigator': '网景导航者',
+        'Google': 'Google', 'Yahoo': 'Yahoo!',
+        'Facebook': 'Facebook', 'Instagram': 'Instagram',
+        'Twitter': 'Twitter', 'Skype': 'Skype',
+        'Zoom': 'Zoom', 'YouTube': 'YouTube',
+        'Netflix': 'Netflix', 'Amazon': '亚马逊公司',
+        'Microsoft': '微软', 'Apple': '苹果公司',
+        'GPU': '图形处理器', 'CPU': '中央处理器',
+        'DRAM': '动态随机存取存储器', 'SSD': '固态硬盘',
+        'GPT-3': 'GPT-3', 'ChatGPT': 'ChatGPT',
+        'DeepSeek R1': 'DeepSeek',
+        'AlphaGo': 'AlphaGo', 'AlphaFold': 'AlphaFold',
+        'BERT': 'BERT', 'TensorFlow': 'TensorFlow',
+        'PyTorch': 'PyTorch', 'React': 'React',
+        'AngularJS': 'AngularJS', 'Vue.js': 'Vue.js',
+        'Docker': 'Docker', 'Kubernetes': 'Kubernetes',
+        'Bitcoin': '比特币', '区块链': '区块链',
+        'ARM 架構': 'ARM架构', 'Apple M1': 'Apple_M1',
+        'Intel 4004': 'Intel_4004', 'Intel 8080': 'Intel_8080',
+        'Intel 80386': 'Intel_80386', 'Intel 486': 'Intel_80486',
+        'Intel Pentium': 'Pentium',
+        'Nvidia Blackwell': 'Nvidia_Blackwell',
+      };
+      if (map[concept]) return wiki + map[concept];
+      return wiki + encodeURIComponent(concept);
+    }
+
+    function processTreeLine(line) {
+      if (line.trim() === '') return '';
+      const m = line.match(/^(\s*[├└│\s─→>]*\s*)(.+)$/);
+      if (!m) return esc(line);
+      let styled = '';
+      for (const ch of m[1]) {
+        styled += '├└│─→>'.includes(ch) ? '<span class="tc">' + ch + '</span>' : ch;
+      }
+      const rest = m[2].replace(/[├└]→/g, '→').trim();
+      const segments = rest.split(/\s*→\s*/).filter(s => s.trim());
+      if (segments.length === 0) return styled;
+      const linked = segments.map(seg => {
+        const y = seg.match(/^(.+?)\s*\(([\d\s\-a-z+]+)\)\s*$/);
+        const concept = y ? y[1].trim() : seg.trim();
+        const year = y ? y[2] : null;
+        const url = getConceptUrl(concept);
+        const link = '<a href="' + url + '" target="_blank" rel="noopener">' + esc(concept) + '</a>';
+        return year ? link + ' <span class="ty">(' + esc(year) + ')</span>' : link;
+      });
+      return styled + linked.join(' <span class="tc">→</span> ');
+    }
+
+    function enhanceCausalTrees() {
+      document.querySelectorAll('#tab-inference pre code').forEach(el => {
+        const text = el.textContent;
+        const pre = el.parentNode;
+        if (text.includes('←────→') || text.includes('←───→')) {
+          const raw = document.createElement('pre');
+          raw.className = 'causal-tree-raw';
+          raw.textContent = text;
+          pre.parentNode.replaceChild(raw, pre);
+          return;
+        }
+        const lines = text.split('\n');
+        const html = lines.map(line => processTreeLine(line)).join('\n');
+        const div = document.createElement('div');
+        div.className = 'causal-tree';
+        div.innerHTML = html;
+        pre.parentNode.replaceChild(div, pre);
+      });
+    }
+
     renderYearCards();
     renderTuringWinners();
     renderStats();
     updateTimeline(2000);
     renderTimelinePreview(2000);
+    enhanceCausalTrees();
   </script>
 </body>
 </html>
